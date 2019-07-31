@@ -17,8 +17,6 @@
 
 package org.apache.commons.math4.stat.ranking;
 
-import org.checkerframework.common.value.qual.MinLen;
-
 /**
  * Interface representing a rank transformation.
  *
@@ -38,5 +36,5 @@ public interface RankingAlgorithm {
      * @param data array of data to be ranked
      * @return an array of ranks corresponding to the elements of the input array
      */
-    double[] rank (double @MinLen(1) [] data);
+    double[] rank (double[] data);
 }
