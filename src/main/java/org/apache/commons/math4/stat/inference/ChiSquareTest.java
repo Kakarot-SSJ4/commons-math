@@ -28,6 +28,9 @@ import org.apache.commons.math4.exception.util.LocalizedFormats;
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathArrays;
 
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.checker.index.qual.SameLen;
+
 /**
  * Implements Chi-Square test statistics.
  *
@@ -200,7 +203,7 @@ public class ChiSquareTest {
      * @throws OutOfRangeException if <code>alpha</code> is not in the range (0, 0.5]
      * @throws MaxCountExceededException if an error occurs computing the p-value
      */
-    public boolean chiSquareTest(final double[] expected, final long[] observed,
+    public boolean chiSquareTest(final double @MinLen(2) [] expected, final long @MinLen(2) [] observed,
                                  final double alpha)
         throws NotPositiveException, NotStrictlyPositiveException,
         DimensionMismatchException, OutOfRangeException, MaxCountExceededException {
@@ -241,7 +244,8 @@ public class ChiSquareTest {
      * @throws DimensionMismatchException if the array is not rectangular
      * @throws NotPositiveException if {@code counts} has negative entries
      */
-    public double chiSquare(final long[][] counts)
+    @SuppressWarnings("index:array.access.unsafe.high") // #1: row < nRows and col < nCols as checked by the loop condition
+    public double chiSquare(final long @MinLen(2) [] @MinLen(2) [] counts)
         throws NullArgumentException, NotPositiveException,
         DimensionMismatchException {
 
@@ -255,9 +259,9 @@ public class ChiSquareTest {
         double total = 0.0d;
         for (int row = 0; row < nRows; row++) {
             for (int col = 0; col < nCols; col++) {
-                rowSum[row] += counts[row][col];
-                colSum[col] += counts[row][col];
-                total += counts[row][col];
+                rowSum[row] += counts[row][col]; // #1
+                colSum[col] += counts[row][col]; // #1
+                total += counts[row][col]; // #1
             }
         }
 
@@ -306,7 +310,7 @@ public class ChiSquareTest {
      * @throws NotPositiveException if {@code counts} has negative entries
      * @throws MaxCountExceededException if an error occurs computing the p-value
      */
-    public double chiSquareTest(final long[][] counts)
+    public double chiSquareTest(final long @MinLen(2) [] @MinLen(2) [] counts)
         throws NullArgumentException, DimensionMismatchException,
         NotPositiveException, MaxCountExceededException {
 
@@ -356,7 +360,7 @@ public class ChiSquareTest {
      * @throws OutOfRangeException if <code>alpha</code> is not in the range (0, 0.5]
      * @throws MaxCountExceededException if an error occurs computing the p-value
      */
-    public boolean chiSquareTest(final long[][] counts, final double alpha)
+    public boolean chiSquareTest(final long @MinLen(2) [] @MinLen(2) [] counts, final double alpha)
         throws NullArgumentException, DimensionMismatchException,
         NotPositiveException, OutOfRangeException, MaxCountExceededException {
 
@@ -558,8 +562,8 @@ public class ChiSquareTest {
      * @throws MaxCountExceededException if an error occurs performing the test
      * @since 1.2
      */
-    public boolean chiSquareTestDataSetsComparison(final long[] observed1,
-                                                   final long[] observed2,
+    public boolean chiSquareTestDataSetsComparison(final long @MinLen(2) @SameLen("#2") [] observed1,
+                                                   final long @MinLen(2) @SameLen("#1") [] observed2,
                                                    final double alpha)
         throws DimensionMismatchException, NotPositiveException,
         ZeroException, OutOfRangeException, MaxCountExceededException {
@@ -582,7 +586,7 @@ public class ChiSquareTest {
      * @throws DimensionMismatchException if the array is not valid
      * @throws NotPositiveException if the array contains any negative entries
      */
-    private void checkArray(final long[][] in)
+    private void checkArray(final long @MinLen(2) [] @MinLen(2) [] in)
         throws NullArgumentException, DimensionMismatchException,
         NotPositiveException {
 

@@ -29,6 +29,9 @@ import org.apache.commons.rng.simple.RandomSource;
 import org.apache.commons.math4.random.RandomUtils;
 import org.apache.commons.math4.util.FastMath;
 
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.checker.index.qual.IndexFor;
+
 
 /**
  * Ranking based on the natural ordering on doubles.
@@ -191,10 +194,10 @@ public class NaturalRanking implements RankingAlgorithm {
      * and a {@link Double#NaN} is encountered in the input data
      */
     @Override
-    public double[] rank(double[] data) {
+    public double[] rank(double @MinLen(1) [] data) {
 
         // Array recording initial positions of data to be ranked
-        IntDoublePair[] ranks = new IntDoublePair[data.length];
+        IntDoublePair @MinLen(1) [] ranks = new IntDoublePair[data.length];
         for (int i = 0; i < data.length; i++) {
             ranks[i] = new IntDoublePair(data[i], i);
         }
@@ -229,11 +232,11 @@ public class NaturalRanking implements RankingAlgorithm {
 
         // Walk the sorted array, filling output array using sorted positions,
         // resolving ties as we go
-        double[] out = new double[ranks.length];
+        double @MinLen(1) [] out = new double[ranks.length];
         int pos = 1;  // position in sorted array
-        out[ranks[0].getPosition()] = pos;
+        out[ranks[0].getPosition()] = pos; // #1
         List<Integer> tiesTrace = new ArrayList<>();
-        tiesTrace.add(ranks[0].getPosition());
+        tiesTrace.add(ranks[0].getPosition()); // #1
         for (int i = 1; i < ranks.length; i++) {
             if (Double.compare(ranks[i].getValue(), ranks[i - 1].getValue()) > 0) {
                 // tie sequence has ended (or had length 1)
@@ -265,13 +268,17 @@ public class NaturalRanking implements RankingAlgorithm {
      * @param ranks input array
      * @return array with NaN-valued entries removed
      */
-    private IntDoublePair[] removeNaNs(IntDoublePair[] ranks) {
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:argument.type.incompatible"}) /*
+    #1: The loop #0.1 occurs ranks.length times and j can increment from 0 only till a maximum ranks.length as it is incremented maximum one time per iteration
+    #2: By the upper limit of j in #1, i.e., j <= ranks.length, j <= outRanks.length
+    */
+    private IntDoublePair @MinLen(1) [] removeNaNs(IntDoublePair @MinLen(1) [] ranks) {
         if (!containsNaNs(ranks)) {
             return ranks;
         }
         IntDoublePair[] outRanks = new IntDoublePair[ranks.length];
         int j = 0;
-        for (int i = 0; i < ranks.length; i++) {
+        for (int i = 0; i < ranks.length; i++) { // #0.1
             if (Double.isNaN(ranks[i].getValue())) {
                 // drop, but adjust original ranks of later elements
                 for (int k = i + 1; k < ranks.length; k++) {
@@ -281,11 +288,11 @@ public class NaturalRanking implements RankingAlgorithm {
             } else {
                 outRanks[j] = new IntDoublePair(
                         ranks[i].getValue(), ranks[i].getPosition());
-                j++;
+                j++; // #1
             }
         }
         IntDoublePair[] returnRanks = new IntDoublePair[j];
-        System.arraycopy(outRanks, 0, returnRanks, 0, j);
+        System.arraycopy(outRanks, 0, returnRanks, 0, j); // #2
         return returnRanks;
     }
 
@@ -333,7 +340,7 @@ public class NaturalRanking implements RankingAlgorithm {
      * -- that is, for any i and j in TiesTrace, <code> ranks[i] == ranks[j]
      * </code>
      */
-    private void resolveTie(double[] ranks, List<Integer> tiesTrace) {
+    private void resolveTie(double[] ranks, @IndexFor("#1") List<Integer> tiesTrace) {
 
         // constant value of ranks over tiesTrace
         final double c = ranks[tiesTrace.get(0)];
@@ -381,7 +388,7 @@ public class NaturalRanking implements RankingAlgorithm {
      * @param tiesTrace list of index values to set
      * @param value value to set
      */
-    private void fill(double[] data, List<Integer> tiesTrace, double value) {
+    private void fill(double[] data, @IndexFor("#1") List<Integer> tiesTrace, double value) {
         Iterator<Integer> iterator = tiesTrace.iterator();
         while (iterator.hasNext()) {
             data[iterator.next()] = value;
@@ -394,7 +401,7 @@ public class NaturalRanking implements RankingAlgorithm {
      * @param ranks array to modify
      * @param nanPositions list of index values to set to <code>Double.NaN</code>
      */
-    private void restoreNaNs(double[] ranks, List<Integer> nanPositions) {
+    private void restoreNaNs(double[] ranks, @IndexFor("#1") List<Integer> nanPositions) {
         if (nanPositions.size() == 0) {
             return;
         }

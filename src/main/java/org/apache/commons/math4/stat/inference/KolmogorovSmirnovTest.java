@@ -46,6 +46,8 @@ import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
 
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * Implementation of the <a href="http://en.wikipedia.org/wiki/Kolmogorov-Smirnov_test">
  * Kolmogorov-Smirnov (K-S) test</a> for equality of continuous distributions.
@@ -144,7 +146,7 @@ public class KolmogorovSmirnovTest {
      * @throws InsufficientDataException if {@code data} does not have length at least 2
      * @throws NullArgumentException if {@code data} is null
      */
-    public double kolmogorovSmirnovTest(ContinuousDistribution distribution, double[] data, boolean exact) {
+    public double kolmogorovSmirnovTest(ContinuousDistribution distribution, double @MinLen(2) [] data, boolean exact) {
         return 1d - cdf(kolmogorovSmirnovStatistic(distribution, data), data.length, exact);
     }
 
@@ -160,7 +162,7 @@ public class KolmogorovSmirnovTest {
      * @throws InsufficientDataException if {@code data} does not have length at least 2
      * @throws NullArgumentException if {@code data} is null
      */
-    public double kolmogorovSmirnovStatistic(ContinuousDistribution distribution, double[] data) {
+    public double kolmogorovSmirnovStatistic(ContinuousDistribution distribution, double @MinLen(2) [] data) {
         checkArray(data);
         final int n = data.length;
         final double nd = n;
@@ -201,20 +203,21 @@ public class KolmogorovSmirnovTest {
      *
      * @see #bootstrap(double[],double[],int,boolean,UniformRandomProvider)
      */
-    public double kolmogorovSmirnovTest(double[] x, double[] y, boolean strict) {
+    @SuppressWarnings("value:argument.type.incompatible") // #1: xa and ya inherit the same length as x and y whether they go through #0.1 or #0.2
+    public double kolmogorovSmirnovTest(double @MinLen(2) [] x, double @MinLen(2) [] y, boolean strict) {
         final long lengthProduct = (long) x.length * y.length;
         double[] xa = null;
         double[] ya = null;
-        if (lengthProduct < LARGE_SAMPLE_PRODUCT && hasTies(x,y)) {
+        if (lengthProduct < LARGE_SAMPLE_PRODUCT && hasTies(x,y)) { // #0.1
             xa = MathArrays.copyOf(x);
             ya = MathArrays.copyOf(y);
             fixTies(xa, ya);
-        } else {
+        } else { // #0.2
             xa = x;
             ya = y;
         }
         if (lengthProduct < LARGE_SAMPLE_PRODUCT) {
-            return exactP(kolmogorovSmirnovStatistic(xa, ya), x.length, y.length, strict);
+            return exactP(kolmogorovSmirnovStatistic(xa, ya), x.length, y.length, strict); // #1
         }
         return approximateP(kolmogorovSmirnovStatistic(x, y), x.length, y.length);
     }
@@ -234,7 +237,7 @@ public class KolmogorovSmirnovTest {
      *         least 2
      * @throws NullArgumentException if either {@code x} or {@code y} is null
      */
-    public double kolmogorovSmirnovTest(double[] x, double[] y) {
+    public double kolmogorovSmirnovTest(double @MinLen(2) [] x, double @MinLen(2) [] y) {
         return kolmogorovSmirnovTest(x, y, true);
     }
 
@@ -252,7 +255,7 @@ public class KolmogorovSmirnovTest {
      *         least 2
      * @throws NullArgumentException if either {@code x} or {@code y} is null
      */
-    public double kolmogorovSmirnovStatistic(double[] x, double[] y) {
+    public double kolmogorovSmirnovStatistic(double @MinLen(2) [] x, double @MinLen(2) [] y) {
         return integralKolmogorovSmirnovStatistic(x, y)/((double)(x.length * (long)y.length));
     }
 
@@ -271,7 +274,8 @@ public class KolmogorovSmirnovTest {
      *         least 2
      * @throws NullArgumentException if either {@code x} or {@code y} is null
      */
-    private long integralKolmogorovSmirnovStatistic(double[] x, double[] y) {
+    @SuppressWarnings("index:array.access.unsafe.high.range") // #1: sx and sy are @MinLen(1) and rankX < n and rankY < m is checked as the condition in the while loop
+    private long integralKolmogorovSmirnovStatistic(double @MinLen(2) [] x, double @MinLen(2) [] y) {
         checkArray(x);
         checkArray(y);
         // Copy and sort the sample arrays
@@ -289,7 +293,7 @@ public class KolmogorovSmirnovTest {
         // Find the max difference between cdf_x and cdf_y
         long supD = 0l;
         do {
-            double z = Double.compare(sx[rankX], sy[rankY]) <= 0 ? sx[rankX] : sy[rankY];
+            double z = Double.compare(sx[rankX], sy[rankY]) <= 0 ? sx[rankX] : sy[rankY]; // #1
             while(rankX < n && Double.compare(sx[rankX], z) == 0) {
                 rankX += 1;
                 curD += m;
@@ -320,7 +324,7 @@ public class KolmogorovSmirnovTest {
      * @throws InsufficientDataException if {@code data} does not have length at least 2
      * @throws NullArgumentException if {@code data} is null
      */
-    public double kolmogorovSmirnovTest(ContinuousDistribution distribution, double[] data) {
+    public double kolmogorovSmirnovTest(ContinuousDistribution distribution, double @MinLen(2) [] data) {
         return kolmogorovSmirnovTest(distribution, data, false);
     }
 
@@ -336,7 +340,7 @@ public class KolmogorovSmirnovTest {
      * @throws InsufficientDataException if {@code data} does not have length at least 2
      * @throws NullArgumentException if {@code data} is null
      */
-    public boolean kolmogorovSmirnovTest(ContinuousDistribution distribution, double[] data, double alpha) {
+    public boolean kolmogorovSmirnovTest(ContinuousDistribution distribution, double @MinLen(2) [] data, double alpha) {
         if ((alpha <= 0) || (alpha > 0.5)) {
             throw new OutOfRangeException(LocalizedFormats.OUT_OF_BOUND_SIGNIFICANCE_LEVEL, alpha, 0, 0.5);
         }
@@ -365,8 +369,8 @@ public class KolmogorovSmirnovTest {
      * @param rng RNG for creating the sampling sets.
      * @return the estimated p-value.
      */
-    public double bootstrap(double[] x,
-                            double[] y,
+    public double bootstrap(double @MinLen(2) [] x,
+                            double @MinLen(2) [] y,
                             int iterations,
                             boolean strict,
                             UniformRandomProvider rng) {
@@ -713,9 +717,9 @@ public class KolmogorovSmirnovTest {
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < m; ++j) {
                 if (i - j + 1 < 0) {
-                    Hdata[i][j] = BigFraction.ZERO;
+                    Hdata[i][j] = BigFraction.ZERO; // #1
                 } else {
-                    Hdata[i][j] = BigFraction.ONE;
+                    Hdata[i][j] = BigFraction.ONE; // #1
                 }
             }
         }

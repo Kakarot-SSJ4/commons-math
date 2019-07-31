@@ -27,6 +27,10 @@ import org.apache.commons.math4.exception.util.LocalizedFormats;
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathArrays;
 
+import org.checkerframework.common.value.qual.ArrayLen;
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.checker.index.qual.SameLen;
+
 /**
  * Implements <a href="http://en.wikipedia.org/wiki/G-test">G Test</a>
  * statistics.
@@ -344,7 +348,8 @@ public class GTest {
      * {@code observed1} or {@code observed2} are zero, or if the count
      * at the same index is zero for both arrays.
      */
-    public double gDataSetsComparison(final long[] observed1, final long[] observed2)
+    @SuppressWarnings("index:array.access.unsafe.high") // #1: i < observed1.length, and observed1.length is the number of columns in k
+    public double gDataSetsComparison(final long @MinLen(2) @SameLen("#2") [] observed1, final long @MinLen(2) @SameLen("#1") [] observed2)
             throws DimensionMismatchException, NotPositiveException, ZeroException {
 
         // Make sure lengths are same
@@ -374,8 +379,8 @@ public class GTest {
                 countSum1 += observed1[i];
                 countSum2 += observed2[i];
                 collSums[i] = observed1[i] + observed2[i];
-                k[0][i] = observed1[i];
-                k[1][i] = observed2[i];
+                k[0][i] = observed1[i]; // #1
+                k[1][i] = observed2[i]; // #1
             }
         }
         // Ensure neither sample is uniformly 0
@@ -417,10 +422,11 @@ public class GTest {
      * @return root log-likelihood ratio
      *
      */
+    @SuppressWarnings("index:argument.type.incompatible") // #1: both the arguments have the same length as both are defined with two elements
     public double rootLogLikelihoodRatio(final long k11, long k12,
             final long k21, final long k22) {
         final double llr = gDataSetsComparison(
-                new long[]{k11, k12}, new long[]{k21, k22});
+                new long[]{k11, k12}, new long[]{k21, k22}); // #1
         double sqrt = FastMath.sqrt(llr);
         if ((double) k11 / (k11 + k12) < (double) k21 / (k21 + k22)) {
             sqrt = -sqrt;
@@ -468,8 +474,8 @@ public class GTest {
      * @throws MaxCountExceededException if an error occurs computing the
      * p-value.
      */
-    public double gTestDataSetsComparison(final long[] observed1,
-            final long[] observed2)
+    public double gTestDataSetsComparison(final long @MinLen(2) @SameLen("#2") [] observed1,
+            final long @MinLen(2) @SameLen("#1") [] observed2)
             throws DimensionMismatchException, NotPositiveException, ZeroException,
             MaxCountExceededException {
 
@@ -523,8 +529,8 @@ public class GTest {
      * @throws MaxCountExceededException if an error occurs performing the test
      */
     public boolean gTestDataSetsComparison(
-            final long[] observed1,
-            final long[] observed2,
+            final long @MinLen(2) @SameLen("#2") [] observed1,
+            final long @MinLen(2) @SameLen("#1") [] observed2,
             final double alpha)
             throws DimensionMismatchException, NotPositiveException,
             ZeroException, OutOfRangeException, MaxCountExceededException {

@@ -26,6 +26,8 @@ import org.apache.commons.math4.stat.ranking.NaturalRanking;
 import org.apache.commons.math4.stat.ranking.TiesStrategy;
 import org.apache.commons.math4.util.FastMath;
 
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * An implementation of the Mann-Whitney U test (also called Wilcoxon rank-sum test).
  *
@@ -121,7 +123,7 @@ public class MannWhitneyUTest {
      * @throws NullArgumentException if {@code x} or {@code y} are {@code null}.
      * @throws NoDataException if {@code x} or {@code y} are zero-length.
      */
-    public double mannWhitneyU(final double[] x, final double[] y)
+    public double mannWhitneyU(final double @MinLen(1) [] x, final double @MinLen(1) [] y)
         throws NullArgumentException, NoDataException {
 
         ensureDataConformance(x, y);
@@ -217,7 +219,7 @@ public class MannWhitneyUTest {
      * @throws MaxCountExceededException if the maximum number of iterations
      * is exceeded
      */
-    public double mannWhitneyUTest(final double[] x, final double[] y)
+    public double mannWhitneyUTest(final double @MinLen(1) [] x, final double @MinLen(1) [] y)
         throws NullArgumentException, NoDataException,
         ConvergenceException, MaxCountExceededException {
 
