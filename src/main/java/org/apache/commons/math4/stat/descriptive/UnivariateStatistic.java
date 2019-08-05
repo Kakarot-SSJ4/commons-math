@@ -19,6 +19,10 @@ package org.apache.commons.math4.stat.descriptive;
 import org.apache.commons.math4.exception.MathIllegalArgumentException;
 import org.apache.commons.math4.util.MathArrays;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+
 
 /**
  * Base interface implemented by all statistics.
@@ -45,7 +49,7 @@ public interface UnivariateStatistic extends MathArrays.Function {
      * @throws MathIllegalArgumentException if values is null or the indices are invalid
      */
     @Override
-    double evaluate(double[] values, int begin, int length) throws MathIllegalArgumentException;
+    double evaluate(double[] values, @IndexFor("#1") int start, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) throws MathIllegalArgumentException;
 
     /**
      * Returns a copy of the statistic with the same internal state.

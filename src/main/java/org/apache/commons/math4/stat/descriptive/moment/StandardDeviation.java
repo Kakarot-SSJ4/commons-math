@@ -24,6 +24,10 @@ import org.apache.commons.math4.stat.descriptive.AbstractStorelessUnivariateStat
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathUtils;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+
 /**
  * Computes the sample standard deviation.  The standard deviation
  * is the positive square root of the variance.  This implementation wraps a
@@ -175,7 +179,7 @@ public class StandardDeviation extends AbstractStorelessUnivariateStatistic
      *  parameters are not valid
      */
     @Override
-    public double evaluate(final double[] values, final int begin, final int length)
+    public double evaluate(final double[] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException  {
         return FastMath.sqrt(variance.evaluate(values, begin, length));
     }
@@ -205,7 +209,7 @@ public class StandardDeviation extends AbstractStorelessUnivariateStatistic
      *  parameters are not valid
      */
     public double evaluate(final double[] values, final double mean,
-                           final int begin, final int length) throws MathIllegalArgumentException  {
+                           final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#3 - 1"}) int length) throws MathIllegalArgumentException  {
         return FastMath.sqrt(variance.evaluate(values, mean, begin, length));
     }
 

@@ -26,6 +26,10 @@ import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+
 /**
  * Returns the product of the available values.
  * <p>
@@ -119,7 +123,7 @@ public class Product extends AbstractStorelessUnivariateStatistic implements Ser
      *  parameters are not valid
      */
     @Override
-    public double evaluate(final double[] values, final int begin, final int length)
+    public double evaluate(final double[] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         double product = Double.NaN;
         if (MathArrays.verifyValues(values, begin, length, true)) {
@@ -161,7 +165,7 @@ public class Product extends AbstractStorelessUnivariateStatistic implements Ser
      */
     @Override
     public double evaluate(final double[] values, final double[] weights,
-                           final int begin, final int length) throws MathIllegalArgumentException {
+                           final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
         double product = Double.NaN;
         if (MathArrays.verifyValues(values, weights, begin, length, true)) {
             product = 1.0;

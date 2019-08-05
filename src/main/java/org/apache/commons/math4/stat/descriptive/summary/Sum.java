@@ -24,6 +24,11 @@ import org.apache.commons.math4.stat.descriptive.AbstractStorelessUnivariateStat
 import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+
 
 /**
   * Returns the sum of the available values.
@@ -117,7 +122,7 @@ public class Sum extends AbstractStorelessUnivariateStatistic implements Seriali
      *  parameters are not valid
      */
     @Override
-    public double evaluate(final double[] values, final int begin, final int length)
+    public double evaluate(double[] values, @IndexFor("#1") int begin, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
 
         double sum = Double.NaN;
@@ -158,7 +163,7 @@ public class Sum extends AbstractStorelessUnivariateStatistic implements Seriali
      * @since 2.1
      */
     public double evaluate(final double[] values, final double[] weights,
-                           final int begin, final int length) throws MathIllegalArgumentException {
+                           final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
         double sum = Double.NaN;
         if (MathArrays.verifyValues(values, weights, begin, length, true)) {
             sum = 0.0;
@@ -191,7 +196,8 @@ public class Sum extends AbstractStorelessUnivariateStatistic implements Seriali
      * @throws MathIllegalArgumentException if the parameters are not valid
      * @since 2.1
      */
-    public double evaluate(final double[] values, final double[] weights) throws MathIllegalArgumentException {
+    @SuppressWarnings("index:argument.type.incompatible") // values.length is @NonNegative @LTLengthOf(value = {"values", "weights"}, offset = {"0 - 1", "0 - 1"})
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights) throws MathIllegalArgumentException {
         return evaluate(values, weights, 0, values.length);
     }
 

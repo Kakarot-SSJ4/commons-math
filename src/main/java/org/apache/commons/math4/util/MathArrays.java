@@ -81,8 +81,8 @@ public class MathArrays {
          * @return the result of the operation.
          */
         double evaluate(double[] array,
-                        int startIndex,
-                        int numElements);
+                        @IndexFor("#1") int startIndex,
+                        @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int numElements);
     }
 
     /**

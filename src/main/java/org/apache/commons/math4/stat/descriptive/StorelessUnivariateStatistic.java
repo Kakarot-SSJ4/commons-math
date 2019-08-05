@@ -18,6 +18,10 @@ package org.apache.commons.math4.stat.descriptive;
 
 import org.apache.commons.math4.exception.MathIllegalArgumentException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+
 /**
  * Extends the definition of {@link UnivariateStatistic} with
  * {@link #increment} and {@link #incrementAll(double[])} methods for adding
@@ -60,7 +64,7 @@ public interface StorelessUnivariateStatistic extends UnivariateStatistic {
      * @param length  the number of elements to add
      * @throws MathIllegalArgumentException if the array is null or the index
      */
-    void incrementAll(double[] values, int start, int length) throws MathIllegalArgumentException;
+    void incrementAll(double[] values, @IndexFor("#1") int start, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) throws MathIllegalArgumentException;
 
     /**
      * Returns the current value of the Statistic.

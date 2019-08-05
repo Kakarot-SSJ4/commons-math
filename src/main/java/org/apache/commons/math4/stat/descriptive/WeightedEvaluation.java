@@ -18,6 +18,11 @@ package org.apache.commons.math4.stat.descriptive;
 
 import org.apache.commons.math4.exception.MathIllegalArgumentException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+
 /**
  * Weighted evaluation for statistics.
  *
@@ -36,7 +41,7 @@ public interface WeightedEvaluation {
      * do not match, weights contain NaN, negative or infinite values, or
      * weights does not include at least on positive value
      */
-    double evaluate(double[] values, double[] weights) throws MathIllegalArgumentException;
+    double evaluate(double @SameLen("#2") [] values, double @SameLen("#1") [] weights) throws MathIllegalArgumentException;
 
     /**
      * Returns the result of evaluating the statistic over the specified entries
@@ -51,7 +56,7 @@ public interface WeightedEvaluation {
      * do not match, indices are invalid, weights contain NaN, negative or
      * infinite values, or weights does not include at least on positive value
      */
-    double evaluate(double[] values, double[] weights, int begin, int length)
+    double evaluate(double[] values, double[] weights, @IndexFor({"#1", "#2"}) int begin, @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length)
     throws MathIllegalArgumentException;
 
 }

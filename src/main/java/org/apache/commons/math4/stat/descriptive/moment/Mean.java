@@ -26,6 +26,10 @@ import org.apache.commons.math4.stat.descriptive.summary.Sum;
 import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+
 /**
  * Computes the arithmetic mean of a set of values. Uses the definitional
  * formula:
@@ -160,7 +164,7 @@ public class Mean extends AbstractStorelessUnivariateStatistic
      *  parameters are not valid
      */
     @Override
-    public double evaluate(final double[] values, final int begin, final int length)
+    public double evaluate(final double[] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
 
         if (MathArrays.verifyValues(values, begin, length)) {
@@ -211,7 +215,7 @@ public class Mean extends AbstractStorelessUnivariateStatistic
      */
     @Override
     public double evaluate(final double[] values, final double[] weights,
-                           final int begin, final int length) throws MathIllegalArgumentException {
+                           final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
         if (MathArrays.verifyValues(values, weights, begin, length)) {
             Sum sum = new Sum();
 
@@ -253,6 +257,7 @@ public class Mean extends AbstractStorelessUnivariateStatistic
      * @throws MathIllegalArgumentException if the parameters are not valid
      * @since 2.1
      */
+    @SuppressWarnings("index:argument.type.incompatible") // values.length is @NonNegative @LTLengthOf(value = {"values", "weights"}, offset = {"0 - 1", "0 - 1"})
     @Override
     public double evaluate(final double[] values, final double[] weights)
         throws MathIllegalArgumentException {
