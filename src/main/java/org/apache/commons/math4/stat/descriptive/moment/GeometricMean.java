@@ -31,6 +31,7 @@ import org.apache.commons.math4.util.MathUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Returns the <a href="http://www.xycoon.com/geometric_mean.htm">
@@ -144,7 +145,7 @@ public class GeometricMean extends AbstractStorelessUnivariateStatistic implemen
      * index parameters are not valid
      */
     @Override
-    public double evaluate(final double[] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return FastMath.exp(sumOfLogs.evaluate(values, begin, length) / length);
     }

@@ -27,6 +27,7 @@ import org.apache.commons.math4.util.MathUtils;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Computes the sample standard deviation.  The standard deviation
@@ -156,7 +157,7 @@ public class StandardDeviation extends AbstractStorelessUnivariateStatistic
      * @throws MathIllegalArgumentException if the array is null
      */
     @Override
-    public double evaluate(final double[] values) throws MathIllegalArgumentException  {
+    public double evaluate(final double @MinLen(1) [] values) throws MathIllegalArgumentException  {
         return FastMath.sqrt(variance.evaluate(values));
     }
 
@@ -179,7 +180,7 @@ public class StandardDeviation extends AbstractStorelessUnivariateStatistic
      *  parameters are not valid
      */
     @Override
-    public double evaluate(final double[] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException  {
         return FastMath.sqrt(variance.evaluate(values, begin, length));
     }
@@ -208,7 +209,7 @@ public class StandardDeviation extends AbstractStorelessUnivariateStatistic
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public double evaluate(final double[] values, final double mean,
+    public double evaluate(final double @MinLen(1) [] values, final double mean,
                            final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#3 - 1"}) int length) throws MathIllegalArgumentException  {
         return FastMath.sqrt(variance.evaluate(values, mean, begin, length));
     }
@@ -234,7 +235,7 @@ public class StandardDeviation extends AbstractStorelessUnivariateStatistic
      * @return the standard deviation of the values or Double.NaN if length = 0
      * @throws MathIllegalArgumentException if the array is null
      */
-    public double evaluate(final double[] values, final double mean)
+    public double evaluate(final double @MinLen(1) [] values, final double mean)
         throws MathIllegalArgumentException  {
         return FastMath.sqrt(variance.evaluate(values, mean));
     }

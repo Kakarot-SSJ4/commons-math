@@ -26,6 +26,7 @@ import org.apache.commons.math4.util.MathArrays;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Abstract base class for implementations of the {@link UnivariateStatistic} interface.
@@ -43,7 +44,7 @@ public abstract class AbstractUnivariateStatistic
      * {@inheritDoc}
      */
     @Override
-    public double evaluate(final double[] values) throws MathIllegalArgumentException {
+    public double evaluate(final double @MinLen(1) [] values) throws MathIllegalArgumentException {
         MathArrays.verifyValues(values, 0, 0);
         return evaluate(values, 0, values.length);
     }
@@ -52,7 +53,7 @@ public abstract class AbstractUnivariateStatistic
      * {@inheritDoc}
      */
     @Override
-    public abstract double evaluate(final double[] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public abstract double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException;
 
     /**

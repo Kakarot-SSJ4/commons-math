@@ -22,6 +22,7 @@ import org.apache.commons.math4.util.MathArrays;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.common.value.qual.MinLen;
 
 
 /**
@@ -36,7 +37,7 @@ public interface UnivariateStatistic extends MathArrays.Function {
      * @throws MathIllegalArgumentException  if values is null
      */
     @Override
-    double evaluate(double[] values) throws MathIllegalArgumentException;
+    double evaluate(double @MinLen(1) [] values) throws MathIllegalArgumentException;
 
     /**
      * Returns the result of evaluating the statistic over the specified entries
@@ -49,7 +50,7 @@ public interface UnivariateStatistic extends MathArrays.Function {
      * @throws MathIllegalArgumentException if values is null or the indices are invalid
      */
     @Override
-    double evaluate(double[] values, @IndexFor("#1") int start, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) throws MathIllegalArgumentException;
+    double evaluate(double @MinLen(1) [] values, @IndexFor("#1") int start, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) throws MathIllegalArgumentException;
 
     /**
      * Returns a copy of the statistic with the same internal state.

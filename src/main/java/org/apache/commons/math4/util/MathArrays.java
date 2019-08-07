@@ -73,14 +73,14 @@ public class MathArrays {
          * @param array Array to operate on.
          * @return the result of the operation.
          */
-        double evaluate(double[] array);
+        double evaluate(double @MinLen(1) [] array);
         /**
          * @param array Array to operate on.
          * @param startIndex Index of the first element to take into account.
          * @param numElements Number of elements to take into account.
          * @return the result of the operation.
          */
-        double evaluate(double[] array,
+        double evaluate(double @MinLen(1) [] array,
                         @IndexFor("#1") int startIndex,
                         @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int numElements);
     }

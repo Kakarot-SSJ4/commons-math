@@ -790,7 +790,6 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the indices are invalid or the array is null
      * @since 3.3
      */
-    @SuppressWarnings("index:argument.type.incompatible") // #1: sample.length is @NonNegative @LTLengthOf(value = {"sample"}, offset = {"- 1"})
     public static double[] mode(double[] sample) throws MathIllegalArgumentException {
         if (sample == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);

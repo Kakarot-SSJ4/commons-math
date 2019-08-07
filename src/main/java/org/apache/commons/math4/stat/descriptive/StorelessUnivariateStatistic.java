@@ -21,6 +21,7 @@ import org.apache.commons.math4.exception.MathIllegalArgumentException;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Extends the definition of {@link UnivariateStatistic} with
@@ -51,7 +52,7 @@ public interface StorelessUnivariateStatistic extends UnivariateStatistic {
      * @param values  array holding the new values to add
      * @throws MathIllegalArgumentException if the array is null
      */
-    void incrementAll(double[] values) throws MathIllegalArgumentException;
+    void incrementAll(double @MinLen(1) [] values) throws MathIllegalArgumentException;
 
     /**
      * Updates the internal state of the statistic to reflect addition of
@@ -64,7 +65,7 @@ public interface StorelessUnivariateStatistic extends UnivariateStatistic {
      * @param length  the number of elements to add
      * @throws MathIllegalArgumentException if the array is null or the index
      */
-    void incrementAll(double[] values, @IndexFor("#1") int start, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) throws MathIllegalArgumentException;
+    void incrementAll(double @MinLen(1) [] values, @IndexFor("#1") int start, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) throws MathIllegalArgumentException;
 
     /**
      * Returns the current value of the Statistic.
