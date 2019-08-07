@@ -320,7 +320,7 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @since 2.1
      */
     @Override
-    public double evaluate(final double[] values, final double[] weights,
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights,
                            final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
 
         double var = Double.NaN;
@@ -511,7 +511,7 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @throws MathIllegalArgumentException if the parameters are not valid
      * @since 2.1
      */
-    public double evaluate(final double[] values, final double[] weights,
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights,
                            final double mean, final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#4 - 1", "#4 - 1"}) int length)
         throws MathIllegalArgumentException {
 

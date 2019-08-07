@@ -28,6 +28,7 @@ import org.apache.commons.math4.util.MathUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 
 /**
@@ -164,7 +165,7 @@ public class Product extends AbstractStorelessUnivariateStatistic implements Ser
      * @since 2.1
      */
     @Override
-    public double evaluate(final double[] values, final double[] weights,
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights,
                            final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
         double product = Double.NaN;
         if (MathArrays.verifyValues(values, weights, begin, length, true)) {
@@ -201,7 +202,7 @@ public class Product extends AbstractStorelessUnivariateStatistic implements Ser
      * @since 2.1
      */
     @Override
-    public double evaluate(final double[] values, final double[] weights) throws MathIllegalArgumentException {
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights) throws MathIllegalArgumentException {
         return evaluate(values, weights, 0, values.length);
     }
 

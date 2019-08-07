@@ -162,7 +162,7 @@ public class Sum extends AbstractStorelessUnivariateStatistic implements Seriali
      * @throws MathIllegalArgumentException if the parameters are not valid
      * @since 2.1
      */
-    public double evaluate(final double[] values, final double[] weights,
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights,
                            final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
         double sum = Double.NaN;
         if (MathArrays.verifyValues(values, weights, begin, length, true)) {
