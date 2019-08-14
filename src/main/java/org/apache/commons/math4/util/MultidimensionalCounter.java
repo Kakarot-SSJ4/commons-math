@@ -23,12 +23,6 @@ import org.apache.commons.math4.exception.DimensionMismatchException;
 import org.apache.commons.math4.exception.NotStrictlyPositiveException;
 import org.apache.commons.math4.exception.OutOfRangeException;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.LessThan;
-import org.checkerframework.common.value.qual.MinLen;
-
 /**
  * Converter between unidimensional storage structure and multidimensional
  * conceptual structure.
@@ -54,7 +48,7 @@ public class MultidimensionalCounter implements Iterable<Integer> {
     /**
      * Number of dimensions.
      */
-    private final @IndexOrHigh({"this.size", "this.uniCounterOffset"}) int dimension;
+    private final int dimension;
     /**
      * Offset for each dimension.
      */
@@ -70,7 +64,7 @@ public class MultidimensionalCounter implements Iterable<Integer> {
     /**
      * Index of last dimension.
      */
-    private final @NonNegative @LessThan("this.dimension") @IndexFor("this.size") int last;
+    private final int last;
 
     /**
      * Perform iteration over the multidimensional counter.
@@ -112,17 +106,16 @@ public class MultidimensionalCounter implements Iterable<Integer> {
          * returned {@code false}.
          */
         @Override
-        @SuppressWarnings("index:array.access.unsafe.high") // #1: last is @LessThan("dimension") where dimension is counter.length, hence 0 <= i <= last is @IndexFor("counter")
         public Integer next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
 
             for (int i = last; i >= 0; i--) {
-                if (counter[i] == size[i] - 1) { // #1
-                    counter[i] = 0; // #1
+                if (counter[i] == size[i] - 1) {
+                    counter[i] = 0;
                 } else {
-                    ++counter[i]; // #1
+                    ++counter[i];
                     break;
                 }
             }
@@ -158,7 +151,7 @@ public class MultidimensionalCounter implements Iterable<Integer> {
          * {@link MultidimensionalCounter#MultidimensionalCounter(int[])
          * constructor of the enclosing class}).
          */
-        public int getCount(@IndexFor("counter") int dim) {
+        public int getCount(int dim) {
             return counter[dim];
         }
 
@@ -178,14 +171,13 @@ public class MultidimensionalCounter implements Iterable<Integer> {
      * @throws NotStrictlyPositiveException if one of the sizes is
      * negative or zero.
      */
-    @SuppressWarnings("index:assignment.type.incompatible") // #1: By #0.1, this.size.length = size.length
-    public MultidimensionalCounter(int @MinLen(1) ... size) throws NotStrictlyPositiveException {
-        dimension = size.length; // #1
-        this.size = MathArrays.copyOf(size); // #0.1
+    public MultidimensionalCounter(int ... size) throws NotStrictlyPositiveException {
+        dimension = size.length;
+        this.size = MathArrays.copyOf(size);
 
         uniCounterOffset = new int[dimension];
 
-        last = dimension - 1; // #1
+        last = dimension - 1;
         int tS = size[last];
         for (int i = 0; i < last; i++) {
             int count = 1;

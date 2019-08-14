@@ -41,17 +41,6 @@ import org.apache.commons.math4.exception.NullArgumentException;
 import org.apache.commons.math4.exception.NumberIsTooLargeException;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
 
-import org.checkerframework.checker.index.qual.SameLen;
-import org.checkerframework.checker.index.qual.LTEqLengthOf;
-import org.checkerframework.checker.index.qual.LTLengthOf;
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.LessThan;
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.checker.index.qual.PolySameLen;
-import org.checkerframework.checker.index.qual.PolyLowerBound;
-import org.checkerframework.checker.index.qual.PolyUpperBound;
-
 /**
  * Arrays utilities.
  *
@@ -128,7 +117,7 @@ public class MathArrays {
      * @throws DimensionMismatchException if the array lengths differ.
      * @since 3.1
      */
-    public static double[] ebeAdd(double @SameLen("#2") [] a, double @SameLen("#1") [] b)
+    public static double[] ebeAdd(double[] a, double[] b)
         throws DimensionMismatchException {
         checkEqualLength(a, b);
 
@@ -148,7 +137,7 @@ public class MathArrays {
      * @throws DimensionMismatchException if the array lengths differ.
      * @since 3.1
      */
-    public static double[] ebeSubtract(double @SameLen("#2") [] a, double @SameLen("#1") [] b)
+    public static double[] ebeSubtract(double[] a, double[] b)
         throws DimensionMismatchException {
         checkEqualLength(a, b);
 
@@ -168,7 +157,7 @@ public class MathArrays {
      * @throws DimensionMismatchException if the array lengths differ.
      * @since 3.1
      */
-    public static double[] ebeMultiply(double @SameLen("#2") [] a, double @SameLen("#1") [] b)
+    public static double[] ebeMultiply(double[] a, double[] b)
         throws DimensionMismatchException {
         checkEqualLength(a, b);
 
@@ -188,7 +177,7 @@ public class MathArrays {
      * @throws DimensionMismatchException if the array lengths differ.
      * @since 3.1
      */
-    public static double[] ebeDivide(double @SameLen("#2") [] a, double @SameLen("#1") [] b)
+    public static double[] ebeDivide(double[] a, double[] b)
         throws DimensionMismatchException {
         checkEqualLength(a, b);
 
@@ -207,7 +196,7 @@ public class MathArrays {
      * @return the L<sub>1</sub> distance between the two points
      * @throws DimensionMismatchException if the array lengths differ.
      */
-    public static double distance1(double @SameLen("#2") [] p1, double @SameLen("#1") [] p2)
+    public static double distance1(double[] p1, double[] p2)
     throws DimensionMismatchException {
         checkEqualLength(p1, p2);
         double sum = 0;
@@ -225,7 +214,7 @@ public class MathArrays {
      * @return the L<sub>1</sub> distance between the two points
      * @throws DimensionMismatchException if the array lengths differ.
      */
-    public static int distance1(int @SameLen("#2") [] p1, int @SameLen("#1") [] p2)
+    public static int distance1(int[] p1, int[] p2)
     throws DimensionMismatchException {
         checkEqualLength(p1, p2);
         int sum = 0;
@@ -243,7 +232,7 @@ public class MathArrays {
      * @return the L<sub>2</sub> distance between the two points
      * @throws DimensionMismatchException if the array lengths differ.
      */
-    public static double distance(double @SameLen("#2") [] p1, double @SameLen("#1") [] p2)
+    public static double distance(double[] p1, double[] p2)
     throws DimensionMismatchException {
         checkEqualLength(p1, p2);
         double sum = 0;
@@ -262,7 +251,7 @@ public class MathArrays {
      * @return the L<sub>2</sub> distance between the two points
      * @throws DimensionMismatchException if the array lengths differ.
      */
-    public static double distance(int @SameLen("#2") [] p1, int @SameLen("#1") [] p2)
+    public static double distance(int[] p1, int[] p2)
     throws DimensionMismatchException {
       checkEqualLength(p1, p2);
       double sum = 0;
@@ -281,7 +270,7 @@ public class MathArrays {
      * @return the L<sub>&infin;</sub> distance between the two points
      * @throws DimensionMismatchException if the array lengths differ.
      */
-    public static double distanceInf(double @SameLen("#2") [] p1, double @SameLen("#1") [] p2)
+    public static double distanceInf(double[] p1, double[] p2)
     throws DimensionMismatchException {
         checkEqualLength(p1, p2);
         double max = 0;
@@ -299,7 +288,7 @@ public class MathArrays {
      * @return the L<sub>&infin;</sub> distance between the two points
      * @throws DimensionMismatchException if the array lengths differ.
      */
-    public static int distanceInf(int @SameLen("#2") [] p1, int @SameLen("#1") [] p2)
+    public static int distanceInf(int[] p1, int[] p2)
     throws DimensionMismatchException {
         checkEqualLength(p1, p2);
         int max = 0;
@@ -328,7 +317,7 @@ public class MathArrays {
      * @param strict Whether the order should be strict.
      * @return {@code true} if sorted, {@code false} otherwise.
      */
-    public static  <T extends Comparable<? super T>> boolean isMonotonic(@PolyUpperBound @PolyLowerBound @PolySameLen T @MinLen(1) [] val,
+    public static  <T extends Comparable<? super T>> boolean isMonotonic(T[] val,
                                       OrderDirection dir,
                                       boolean strict) {
         T previous = val[0];
@@ -378,7 +367,7 @@ public class MathArrays {
      * @param strict Whether the order should be strict.
      * @return {@code true} if sorted, {@code false} otherwise.
      */
-    public static boolean isMonotonic(double @MinLen(1) [] val, OrderDirection dir, boolean strict) {
+    public static boolean isMonotonic(double[] val, OrderDirection dir, boolean strict) {
         return checkOrder(val, dir, strict, false);
     }
 
@@ -468,8 +457,7 @@ public class MathArrays {
      * @throws NonMonotonicSequenceException if the array is not sorted
      * and {@code abort} is {@code true}.
      */
-    @SuppressWarnings("index:array.access.unsafe.high.range") // #1: index can be maximum max by loop #0.1, and index != max as checked by the previous if
-    public static boolean checkOrder(double @MinLen(1) [] val, OrderDirection dir,
+    public static boolean checkOrder(double[] val, OrderDirection dir,
                                      boolean strict, boolean abort)
         throws NonMonotonicSequenceException {
         double previous = val[0];
@@ -477,7 +465,7 @@ public class MathArrays {
 
         int index;
         ITEM:
-        for (index = 1; index < max; index++) { // #0.1
+        for (index = 1; index < max; index++) {
             switch (dir) {
             case INCREASING:
                 if (strict) {
@@ -516,7 +504,7 @@ public class MathArrays {
 
         // Loop early exit means wrong ordering.
         if (abort) {
-            throw new NonMonotonicSequenceException(val[index], previous, index, dir, strict); // #1
+            throw new NonMonotonicSequenceException(val[index], previous, index, dir, strict);
         } else {
             return false;
         }
@@ -531,7 +519,7 @@ public class MathArrays {
      * @throws NonMonotonicSequenceException if the array is not sorted.
      * @since 2.2
      */
-    public static void checkOrder(double @MinLen(1) [] val, OrderDirection dir,
+    public static void checkOrder(double[] val, OrderDirection dir,
                                   boolean strict) throws NonMonotonicSequenceException {
         checkOrder(val, dir, strict, true);
     }
@@ -543,7 +531,7 @@ public class MathArrays {
      * @throws NonMonotonicSequenceException if the array is not sorted.
      * @since 2.2
      */
-    public static void checkOrder(double @MinLen(1) [] val) throws NonMonotonicSequenceException {
+    public static void checkOrder(double[] val) throws NonMonotonicSequenceException {
         checkOrder(val, OrderDirection.INCREASING, true);
     }
 
@@ -555,7 +543,7 @@ public class MathArrays {
      * @throws DimensionMismatchException if input array is not rectangular
      * @since 3.1
      */
-    public static void checkRectangular(final long @MinLen(1) [] @MinLen(1) [] in)
+    public static void checkRectangular(final long[][] in)
         throws NullArgumentException, DimensionMismatchException {
         MathUtils.checkNotNull(in);
         for (int i = 1; i < in.length; i++) {
@@ -701,7 +689,6 @@ public class MathArrays {
      * @throws NullArgumentException if {@code x} or any {@code y} is null
      * @since 3.0
      */
-    @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.low"}) // #1: #0.1, #0.2 and #0.3 ensures that yInPlace.length = len and indices are index of certain keys, hence a valid index
     public static void sortInPlace(double[] x,
                                    final OrderDirection dir,
                                    double[] ... yList)
@@ -717,11 +704,11 @@ public class MathArrays {
         final int len = x.length;
 
         for (int j = 0; j < yListLen; j++) {
-            final double[] y = yList[j]; // #0,2
+            final double[] y = yList[j];
             if (y == null) {
                 throw new NullArgumentException();
             }
-            if (y.length != len) { // #0.1
+            if (y.length != len) {
                 throw new DimensionMismatchException(y.length, len);
             }
         }
@@ -769,11 +756,11 @@ public class MathArrays {
         // elements to their new location.
         for (int j = 0; j < yListLen; j++) {
             // Input array will be modified in place.
-            final double[] yInPlace = yList[j]; // #0.3
+            final double[] yInPlace = yList[j];
             final double[] yOrig = yInPlace.clone();
 
             for (int i = 0; i < len; i++) {
-                yInPlace[i] = yOrig[indices[i]]; // #1
+                yInPlace[i] = yOrig[indices[i]];
             }
         }
     }
@@ -807,10 +794,9 @@ public class MathArrays {
      * zeroes.
      * @return the copied array.
      */
-    @SuppressWarnings("index:argument.type.incompatible") // #1: FastMath.min(len, source.length) is the minimum of the length of the two arrays, hence this expression is always @LTEqLengthOf({"source","output"})
-    public static int[] copyOf(int[] source, @NonNegative int len) {
+    public static int[] copyOf(int[] source, int len) {
          final int[] output = new int[len];
-         System.arraycopy(source, 0, output, 0, FastMath.min(len, source.length)); // #1
+         System.arraycopy(source, 0, output, 0, FastMath.min(len, source.length));
          return output;
      }
 
@@ -823,10 +809,9 @@ public class MathArrays {
      * zeroes.
      * @return the copied array.
      */
-    @SuppressWarnings("index:argument.type.incompatible") // #1: FastMath.min(len, source.length) is the minimum of the length of the two arrays, hence this expression is always @LTEqLengthOf({"source","output"})
-    public static double[] copyOf(double[] source, @NonNegative int len) {
+    public static double[] copyOf(double[] source, int len) {
          final double[] output = new double[len];
-         System.arraycopy(source, 0, output, 0, FastMath.min(len, source.length)); // #1
+         System.arraycopy(source, 0, output, 0, FastMath.min(len, source.length));
          return output;
      }
 
@@ -838,11 +823,10 @@ public class MathArrays {
      * @param to Final index of the range to be copied, exclusive. (This index may lie outside the array.)
      * @return the copied array.
      */
-    @SuppressWarnings("index:argument.type.incompatible") // #1: As FastMath.min(len, source.length - from)) is the minimum of both the arguments, the expression <= source.length - fron and <= output
-    public static double[] copyOfRange(double[] source, @LTEqLengthOf("#1") @LessThan("#3") @NonNegative int from, @NonNegative int to) {
+    public static double[] copyOfRange(double[] source, int from, int to) {
         final int len = to - from;
         final double[] output = new double[len];
-        System.arraycopy(source, from, output, 0, FastMath.min(len, source.length - from)); // #1
+        System.arraycopy(source, from, output, 0, FastMath.min(len, source.length - from));
         return output;
      }
 
@@ -1013,7 +997,7 @@ public class MathArrays {
      * @return a new array
      * @since 3.2
      */
-    public static <T> T[] buildArray(final Field<T> field, final @NonNegative int length) {
+    public static <T> T[] buildArray(final Field<T> field, final int length) {
         @SuppressWarnings("unchecked") // OK because field must be correct class
         T[] array = (T[]) Array.newInstance(field.getRuntimeClass(), length);
         Arrays.fill(array, field.getZero());
@@ -1032,8 +1016,8 @@ public class MathArrays {
      * @return a new array
      * @since 3.2
      */
-    @SuppressWarnings({"unchecked","index:array.access.unsafe.high.range"}) // i < rows which is the number of rows in array
-    public static <T> T[][] buildArray(final Field<T> field, final @NonNegative int rows, final @NonNegative int columns) {
+    @SuppressWarnings("unchecked")
+    public static <T> T[][] buildArray(final Field<T> field, final int rows, final int columns) {
         final T[][] array;
         if (columns < 0) {
             T[] dummyRow = buildArray(field, 0);
@@ -1044,7 +1028,7 @@ public class MathArrays {
                                                   rows, columns
                                               });
             for (int i = 0; i < rows; ++i) {
-                Arrays.fill(array[i], field.getZero()); // #1
+                Arrays.fill(array[i], field.getZero());
             }
         }
         return array;
@@ -1070,10 +1054,6 @@ public class MathArrays {
      *
      * @since 3.3
      */
-    @SuppressWarnings({"index:array.access.unsafe.high","index:array.access.unsafe.low"}) /*
-    #1: j >= 0 is checked and j < xLen as j is max n + 1 - xLen where n is max xLen + hLen - 2
-        k < hLen is checked
-    */
     public static double[] convolve(double[] x, double[] h)
         throws NullArgumentException,
                NoDataException {
@@ -1097,7 +1077,7 @@ public class MathArrays {
             int k = FastMath.max(0, n + 1 - xLen);
             int j = n - k;
             while (k < hLen && j >= 0) {
-                yn += x[j--] * h[k++]; // #1
+                yn += x[j--] * h[k++];
             }
             y[n] = yn;
         }
@@ -1112,7 +1092,7 @@ public class MathArrays {
      * @return an array whose entries are the numbers 0, 1, ..., {@code n}-1.
      * If {@code n == 0}, the returned array is empty.
      */
-    public static int[] natural(@NonNegative int n) {
+    public static int[] natural(int n) {
         return sequence(n, 0, 1);
     }
     /**
@@ -1128,7 +1108,7 @@ public class MathArrays {
      *
      * @since 3.4
      */
-    public static int[] sequence(@NonNegative int size,
+    public static int[] sequence(int size,
                                  int start,
                                  int stride) {
         final int[] a = new int[size];
@@ -1156,7 +1136,7 @@ public class MathArrays {
      * @throws MathIllegalArgumentException if the indices are invalid or the array is null
      * @since 3.3
      */
-    public static boolean verifyValues(final double[] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public static boolean verifyValues(final double[] values, final int begin, final int length)
             throws MathIllegalArgumentException {
         return verifyValues(values, begin, length, false);
     }
@@ -1240,8 +1220,8 @@ public class MathArrays {
     public static boolean verifyValues(
         final double[] values,
         final double[] weights,
-        final @IndexFor("#2") int begin,
-        final @NonNegative @LTLengthOf(value = {"#2"}, offset = {"#3 - 1"}) int length) throws MathIllegalArgumentException {
+        final int begin,
+        final int length) throws MathIllegalArgumentException {
         return verifyValues(values, weights, begin, length, false);
     }
 
@@ -1278,7 +1258,7 @@ public class MathArrays {
      * @since 3.3
      */
     public static boolean verifyValues(final double[] values, final double[] weights,
-            final @NonNegative @LTLengthOf("#2") int begin, final @LTLengthOf(value = {"#2"}, offset = {"#3 - 1"}) int length, final boolean allowEmpty) throws MathIllegalArgumentException {
+            final int begin, final int length, final boolean allowEmpty) throws MathIllegalArgumentException {
 
         if (weights == null || values == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);
@@ -1321,7 +1301,6 @@ public class MathArrays {
      * @throws NullPointerException if any of the arrays are null
      * @since 3.6
      */
-    @SuppressWarnings("index:argument.type.incompatible") // #1: combined is the summation of all x[i].length and offset is the summation of x[i].length till the previous i, hence current x[i].length = combinedLength - offset
     public static double[] concatenate(double[] ...x) {
         int combinedLength = 0;
         for (double[] a : x) {
@@ -1332,7 +1311,7 @@ public class MathArrays {
         final double[] combined = new double[combinedLength];
         for (int i = 0; i < x.length; i++) {
             curLength = x[i].length;
-            System.arraycopy(x[i], 0, combined, offset, curLength); // #1
+            System.arraycopy(x[i], 0, combined, offset, curLength);
             offset += curLength;
         }
         return combined;
@@ -1352,7 +1331,6 @@ public class MathArrays {
      * @throws NullPointerException if data is null
      * @since 3.6
      */
-    @SuppressWarnings("index:array.access.unsafe.high.range") // #1: iterator.hasNext() => i is a valid index of out
     public static double[] unique(double[] data) {
         TreeSet<Double> values = new TreeSet<>();
         for (int i = 0; i < data.length; i++) {
@@ -1363,7 +1341,7 @@ public class MathArrays {
         Iterator<Double> iterator = values.descendingIterator();
         int i = 0;
         while (iterator.hasNext()) {
-            out[i++] = iterator.next(); // #1
+            out[i++] = iterator.next();
         }
         return out;
     }
