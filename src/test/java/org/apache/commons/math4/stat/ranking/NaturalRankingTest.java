@@ -271,4 +271,12 @@ public class NaturalRankingTest {
         TestUtils.assertEquals(data, ranks, 0d);
     }
 
+    public NaturalRanking naturalranking;
+    @Test
+    public void AllNaNArray(){
+    naturalranking = new NaturalRanking(NaNStrategy.REMOVED, TiesStrategy.AVERAGE);
+        double[] x = {Double.NaN, Double.NaN};
+        double[] y = naturalranking.rank(x);
+    }
+
 }
