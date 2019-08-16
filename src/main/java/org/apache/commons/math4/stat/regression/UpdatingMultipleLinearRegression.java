@@ -19,6 +19,8 @@ package org.apache.commons.math4.stat.regression;
 import org.apache.commons.math4.exception.MathIllegalArgumentException;
 import org.apache.commons.math4.exception.NoDataException;
 
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * An interface for regression models allowing for dynamic updating of the data.
  * That is, the entire data set need not be loaded into memory. As observations
@@ -63,7 +65,7 @@ public interface UpdatingMultipleLinearRegression {
      * @throws ModelSpecificationException if {@code x} is not rectangular, does not match
      * the length of {@code y} or does not contain sufficient data to estimate the model
      */
-    void addObservations(double[][] x, double[] y) throws ModelSpecificationException;
+    void addObservations(double[] @MinLen(1) [] x, double[] y) throws ModelSpecificationException;
 
     /**
      * Clears internal buffers and resets the regression model. This means all

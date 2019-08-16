@@ -30,6 +30,10 @@ import org.apache.commons.math4.linear.RealVector;
 import org.apache.commons.math4.stat.descriptive.moment.Variance;
 import org.apache.commons.math4.util.FastMath;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * Abstract base class for implementations of MultipleLinearRegression.
  * @since 2.0
@@ -110,11 +114,16 @@ public abstract class AbstractMultipleLinearRegression implements
      * @throws InsufficientDataException if <code>nobs</code> is less than
      * <code>nvars + 1</code>
      */
-    public void newSampleData(double[] data, int nobs, int nvars) {
+    @SuppressWarnings({"index:array.access.unsafe.high", "index:array.access.unsafe.high.range", "index:array.access.unsafe.high.constant"}) /*
+    #1: data.length = nobs * (nvars + 1) by #0.1
+    #2: If this statement is executed, 0 < nobs, hence, nvars > 0, hence 0 is @IndexFor("x[i]")
+    #3: j < cols is checked
+    */
+    public void newSampleData(double[] data, @NonNegative @LessThan("#3 + 1") int nobs, @NonNegative int nvars) {
         if (data == null) {
             throw new NullArgumentException();
         }
-        if (data.length != nobs * (nvars + 1)) {
+        if (data.length != nobs * (nvars + 1)) { // #0.1
             throw new DimensionMismatchException(data.length, nobs * (nvars + 1));
         }
         if (nobs <= nvars) {
@@ -125,12 +134,12 @@ public abstract class AbstractMultipleLinearRegression implements
         double[][] x = new double[nobs][cols];
         int pointer = 0;
         for (int i = 0; i < nobs; i++) {
-            y[i] = data[pointer++];
+            y[i] = data[pointer++]; // #1
             if (!noIntercept) {
-                x[i][0] = 1.0d;
+                x[i][0] = 1.0d; // #2
             }
             for (int j = noIntercept ? 0 : 1; j < cols; j++) {
-                x[i][j] = data[pointer++];
+                x[i][j] = data[pointer++]; // #3, #1
             }
         }
         this.xMatrix = new Array2DRowRealMatrix(x);
@@ -178,7 +187,11 @@ public abstract class AbstractMultipleLinearRegression implements
      * @throws NoDataException if x is empty
      * @throws DimensionMismatchException if x is not rectangular
      */
-    protected void newXSampleData(double[][] x) {
+    @SuppressWarnings({"index:array.access.unsafe.high.constant", "index:argument.type.incompatible"}) /*
+    #1: xAug has at least 1 column by the definition in #0.1
+    #2: nVars = x[0].length = x[i].length as it is a rectangular matrix, also nvars = xAug[i].length - 1
+    */
+    protected void newXSampleData(double @MinLen(1) [][] x) {
         if (x == null) {
             throw new NullArgumentException();
         }
@@ -189,13 +202,13 @@ public abstract class AbstractMultipleLinearRegression implements
             this.xMatrix = new Array2DRowRealMatrix(x, true);
         } else { // Augment design matrix with initial unitary column
             final int nVars = x[0].length;
-            final double[][] xAug = new double[x.length][nVars + 1];
+            final double[][] xAug = new double[x.length][nVars + 1]; // #0.1
             for (int i = 0; i < x.length; i++) {
                 if (x[i].length != nVars) {
                     throw new DimensionMismatchException(x[i].length, nVars);
                 }
-                xAug[i][0] = 1.0d;
-                System.arraycopy(x[i], 0, xAug[i], 1, nVars);
+                xAug[i][0] = 1.0d; // #1
+                System.arraycopy(x[i], 0, xAug[i], 1, nVars); // #2
             }
             this.xMatrix = new Array2DRowRealMatrix(xAug, false);
         }

@@ -38,7 +38,7 @@ public abstract class AbstractUnivariateStatistic
     implements UnivariateStatistic {
 
     /** Stored data. */
-    private double[] storedData;
+    private double @MinLen(1) [] storedData;
 
     /**
      * {@inheritDoc}
@@ -100,7 +100,7 @@ public abstract class AbstractUnivariateStatistic
      * are not valid
      * @see #evaluate()
      */
-    public void setData(double[] values, @IndexFor("#1") int start, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public void setData(double[] values, @IndexFor("#1") int begin, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
             throws MathIllegalArgumentException {
         if (values == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);

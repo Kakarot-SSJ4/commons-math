@@ -26,6 +26,8 @@ import org.apache.commons.math4.exception.util.LocalizedFormats;
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.numbers.core.Precision;
 
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * Estimates an ordinary least squares regression model
  * with one independent variable.
@@ -293,7 +295,7 @@ public class SimpleRegression implements Serializable, UpdatingMultipleLinearReg
      * the length of {@code y} or does not contain sufficient data to estimate the model
      */
     @Override
-    public void addObservations(final double[][] x,final double[] y) throws ModelSpecificationException {
+    public void addObservations(final double[] @MinLen(1) [] x,final double[] y) throws ModelSpecificationException {
         if ((x == null) || (y == null) || (x.length != y.length)) {
             throw new ModelSpecificationException(
                   LocalizedFormats.DIMENSIONS_MISMATCH_SIMPLE,
@@ -329,7 +331,7 @@ public class SimpleRegression implements Serializable, UpdatingMultipleLinearReg
      *
      * @param data array of observations to be removed
      */
-    public void removeData(double[][] data) {
+    public void removeData(double[] @MinLen(2) [] data) {
         for (int i = 0; i < data.length && n > 0; i++) {
             removeData(data[i][0], data[i][1]);
         }

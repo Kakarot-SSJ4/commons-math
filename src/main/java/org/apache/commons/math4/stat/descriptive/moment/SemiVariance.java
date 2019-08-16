@@ -184,7 +184,7 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
      *
      */
      @Override
-     public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+     public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
          throws MathIllegalArgumentException {
          double m = (new Mean()).evaluate(values, start, length);
          return evaluate(values, m, varianceDirection, biasCorrected, 0, values.length);
@@ -258,8 +258,9 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
       * @throws MathIllegalArgumentException if the parameters are not valid
       *
       */
+     @SuppressWarnings("index:array.access.unsafe.high") // #1: start <= i < length and max value of length can be values.length
      public double evaluate (final double @MinLen(1) [] values, final double cutoff, final Direction direction,
-                             final boolean corrected, final @IndexFor("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#4 - 1"}) int length)
+                             final boolean corrected, final @IndexFor("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#5 - 1"}) int length)
          throws MathIllegalArgumentException {
 
          MathArrays.verifyValues(values, start, length);
@@ -274,8 +275,8 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
                  double dev = 0.0;
                  double sumsq = 0.0;
                  for (int i = start; i < length; i++) {
-                     if ((values[i] > cutoff) == booleanDirection) {
-                         dev = values[i] - cutoff;
+                     if ((values[i] > cutoff) == booleanDirection) { // #1
+                         dev = values[i] - cutoff; // #1
                          sumsq += dev * dev;
                      }
                  }

@@ -23,6 +23,9 @@ import org.apache.commons.math4.exception.DimensionMismatchException;
 import org.apache.commons.math4.linear.MatrixUtils;
 import org.apache.commons.math4.linear.RealMatrix;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SameLen;
+
 /**
  * Returns the covariance matrix of the available vectors.
  * @since 1.2
@@ -49,7 +52,7 @@ public class VectorialCovariance implements Serializable {
      * @param isBiasCorrected if true, computed the unbiased sample covariance,
      * otherwise computes the biased population covariance
      */
-    public VectorialCovariance(int dimension, boolean isBiasCorrected) {
+    public VectorialCovariance(@NonNegative int dimension, boolean isBiasCorrected) {
         sums         = new double[dimension];
         productsSums = new double[dimension * (dimension + 1) / 2];
         n            = 0;
@@ -61,7 +64,11 @@ public class VectorialCovariance implements Serializable {
      * @param v vector to add
      * @throws DimensionMismatchException if the vector does not have the right dimension
      */
-    public void increment(double[] v) throws DimensionMismatchException {
+    @SuppressWarnings("index:array.access.unsafe.high.range") /*
+    #1: k is incremented from 0 till v.length, but is only v.length - 1 when used as an index, also, v is @SameLen("this.sums"),
+    and this.sums.length <= this.productsSums.length
+    */
+    public void increment(double @SameLen("this.sums") [] v) throws DimensionMismatchException {
         if (v.length != sums.length) {
             throw new DimensionMismatchException(v.length, sums.length);
         }
@@ -69,7 +76,7 @@ public class VectorialCovariance implements Serializable {
         for (int i = 0; i < v.length; ++i) {
             sums[i] += v[i];
             for (int j = 0; j <= i; ++j) {
-                productsSums[k++] += v[i] * v[j];
+                productsSums[k++] += v[i] * v[j]; // #1
             }
         }
         n++;
@@ -79,6 +86,7 @@ public class VectorialCovariance implements Serializable {
      * Get the covariance matrix.
      * @return covariance matrix
      */
+    @SuppressWarnings("index:array.access.unsafe.high.range") // #1: productsSums.length = dimension * (dimension + 1) / 2 as defined in VectorialCovariance()
     public RealMatrix getResult() {
 
         int dimension = sums.length;
@@ -89,7 +97,7 @@ public class VectorialCovariance implements Serializable {
             int k = 0;
             for (int i = 0; i < dimension; ++i) {
                 for (int j = 0; j <= i; ++j) {
-                    double e = c * (n * productsSums[k++] - sums[i] * sums[j]);
+                    double e = c * (n * productsSums[k++] - sums[i] * sums[j]); // #1
                     result.setEntry(i, j, e);
                     result.setEntry(j, i, e);
                 }
