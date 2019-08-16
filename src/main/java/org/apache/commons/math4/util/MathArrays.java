@@ -45,6 +45,7 @@ import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.MinLen;
@@ -73,15 +74,15 @@ public class MathArrays {
          * @param array Array to operate on.
          * @return the result of the operation.
          */
-        double evaluate(double @MinLen(1) [] array);
+        double evaluate(double[] array);
         /**
          * @param array Array to operate on.
          * @param startIndex Index of the first element to take into account.
          * @param numElements Number of elements to take into account.
          * @return the result of the operation.
          */
-        double evaluate(double @MinLen(1) [] array,
-                        @IndexFor("#1") int startIndex,
+        double evaluate(double[] array,
+                        @IndexOrHigh("#1") int startIndex,
                         @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int numElements);
     }
 

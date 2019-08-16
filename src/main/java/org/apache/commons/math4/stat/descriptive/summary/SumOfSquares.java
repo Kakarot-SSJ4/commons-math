@@ -122,7 +122,7 @@ public class SumOfSquares extends AbstractStorelessUnivariateStatistic implement
      *  parameters are not valid
      */
     @Override
-    public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public double evaluate(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
 
         double sumSq = Double.NaN;

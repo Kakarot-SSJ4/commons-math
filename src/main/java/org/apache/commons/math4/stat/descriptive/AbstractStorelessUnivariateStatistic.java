@@ -24,7 +24,7 @@ import org.apache.commons.math4.util.MathUtils;
 import org.apache.commons.numbers.core.Precision;
 
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -58,7 +58,7 @@ public abstract class AbstractStorelessUnivariateStatistic
      * @see org.apache.commons.math4.stat.descriptive.UnivariateStatistic#evaluate(double[])
      */
     @Override
-    public double evaluate(final double @MinLen(1) [] values) throws MathIllegalArgumentException {
+    public double evaluate(final double[] values) throws MathIllegalArgumentException {
         if (values == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);
         }
@@ -86,7 +86,7 @@ public abstract class AbstractStorelessUnivariateStatistic
      * @see org.apache.commons.math4.stat.descriptive.UnivariateStatistic#evaluate(double[], int, int)
      */
     @Override
-    public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public double evaluate(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
 
         if (MathArrays.verifyValues(values, begin, length)) {
@@ -153,7 +153,7 @@ public abstract class AbstractStorelessUnivariateStatistic
      * @see StorelessUnivariateStatistic#incrementAll(double[], int, int)
      */
     @Override
-    public void incrementAll(double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) throws MathIllegalArgumentException {
+    public void incrementAll(double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) throws MathIllegalArgumentException {
         if (MathArrays.verifyValues(values, begin, length)) {
             int k = begin + length;
             for (int i = begin; i < k; i++) {

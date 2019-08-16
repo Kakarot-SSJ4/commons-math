@@ -26,7 +26,7 @@ import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -184,7 +184,7 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
      *
      */
      @Override
-     public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+     public double evaluate(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
          throws MathIllegalArgumentException {
          double m = (new Mean()).evaluate(values, start, length);
          return evaluate(values, m, varianceDirection, biasCorrected, 0, values.length);
@@ -200,7 +200,7 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
       * @throws MathIllegalArgumentException if values is null
       *
       */
-     public double evaluate(final double @MinLen(1) [] values, Direction direction)
+     public double evaluate(final double[] values, Direction direction)
          throws MathIllegalArgumentException {
          double m = (new Mean()).evaluate(values);
          return evaluate(values, m, direction, biasCorrected, 0, values.length);
@@ -218,7 +218,7 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
       * @return the SemiVariance
       * @throws MathIllegalArgumentException if values is null
       */
-     public double evaluate(final double @MinLen(1) [] values, final double cutoff)
+     public double evaluate(final double[] values, final double cutoff)
          throws MathIllegalArgumentException {
          return evaluate(values, cutoff, varianceDirection, biasCorrected, 0, values.length);
      }
@@ -236,7 +236,7 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
       * @return the SemiVariance
       * @throws MathIllegalArgumentException if values is null
       */
-     public double evaluate(final double @MinLen(1) [] values, final double cutoff, final Direction direction)
+     public double evaluate(final double[] values, final double cutoff, final Direction direction)
          throws MathIllegalArgumentException {
          return evaluate(values, cutoff, direction, biasCorrected, 0, values.length);
      }
@@ -258,8 +258,8 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
       * @throws MathIllegalArgumentException if the parameters are not valid
       *
       */
-     public double evaluate (final double @MinLen(1) [] values, final double cutoff, final Direction direction,
-                             final boolean corrected, final @IndexFor("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#4 - 1"}) int length)
+     public double evaluate (final double[] values, final double cutoff, final Direction direction,
+                             final boolean corrected, final @IndexOrHigh("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#4 - 1"}) int length)
          throws MathIllegalArgumentException {
 
          MathArrays.verifyValues(values, start, length);

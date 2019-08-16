@@ -27,7 +27,7 @@ import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
 
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.common.value.qual.MinLen;
@@ -231,7 +231,7 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @throws MathIllegalArgumentException if the array is null
      */
     @Override
-    public double evaluate(final double @MinLen(1) [] values) throws MathIllegalArgumentException {
+    public double evaluate(final double[] values) throws MathIllegalArgumentException {
         if (values == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);
         }
@@ -260,7 +260,7 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      *  parameters are not valid
      */
     @Override
-    public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public double evaluate(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
 
         double var = Double.NaN;
@@ -320,8 +320,8 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @since 2.1
      */
     @Override
-    public double evaluate(final double @MinLen(1) @SameLen("#2") [] values, final double @SameLen("#1") @MinLen(1) [] weights,
-                           final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights,
+                           final @IndexOrHigh({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
 
         double var = Double.NaN;
 
@@ -376,7 +376,7 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @since 2.1
      */
     @Override
-    public double evaluate(final double @MinLen(1) @SameLen("#2") [] values, final double @MinLen(1) @SameLen("#1") [] weights)
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights)
         throws MathIllegalArgumentException {
         return evaluate(values, weights, 0, values.length);
     }
@@ -407,8 +407,8 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public double evaluate(final double @MinLen(1) [] values, final double mean,
-                           final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#3 - 1"}) int length) throws MathIllegalArgumentException {
+    public double evaluate(final double[] values, final double mean,
+                           final int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#3 - 1"}) int length) throws MathIllegalArgumentException {
 
         double var = Double.NaN;
 
@@ -460,7 +460,7 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @return the variance of the values or Double.NaN if the array is empty
      * @throws MathIllegalArgumentException if the array is null
      */
-    public double evaluate(final double @MinLen(1) [] values, final double mean) throws MathIllegalArgumentException {
+    public double evaluate(final double[] values, final double mean) throws MathIllegalArgumentException {
         return evaluate(values, mean, 0, values.length);
     }
 
@@ -509,8 +509,8 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @throws MathIllegalArgumentException if the parameters are not valid
      * @since 2.1
      */
-    public double evaluate(final double @MinLen(1) @SameLen("#2") [] values, final double @MinLen(1) @SameLen("#1") [] weights,
-                           final double mean, final @IndexFor({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#4 - 1", "#4 - 1"}) int length)
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights,
+                           final double mean, final @IndexOrHigh({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#4 - 1", "#4 - 1"}) int length)
         throws MathIllegalArgumentException {
 
         double var = Double.NaN;
@@ -584,7 +584,7 @@ public class Variance extends AbstractStorelessUnivariateStatistic implements Se
      * @throws MathIllegalArgumentException if the parameters are not valid
      * @since 2.1
      */
-    public double evaluate(final double @MinLen(1) @SameLen("#2") [] values, final double @MinLen(1) @SameLen("#1") [] weights, final double mean)
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights, final double mean)
         throws MathIllegalArgumentException {
         return evaluate(values, weights, mean, 0, values.length);
     }
