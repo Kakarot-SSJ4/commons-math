@@ -35,7 +35,7 @@ import org.apache.commons.math4.util.PivotingStrategyInterface;
 import org.apache.commons.numbers.core.Precision;
 
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -270,7 +270,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * @return the percentile value or Double.NaN if the array is empty
      * @throws MathIllegalArgumentException if <code>values</code> is null or p is invalid
      */
-    public double evaluate(final double @MinLen(1) [] values, final double p)
+    public double evaluate(final double[] values, final double p)
         throws MathIllegalArgumentException {
 
         MathArrays.verifyValues(values, 0, 0);
@@ -300,7 +300,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      *
      */
     @Override
-    public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public double evaluate(final double[] values, final @IndexOrHigh("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return evaluate(values, start, length, quantile);
     }
@@ -334,7 +334,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * @throws MathIllegalArgumentException if the parameters are not valid or the
      * input array is null
      */
-    public double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin,
+    public double evaluate(final double[] values, final @IndexOrHigh("#1") int begin,
                            final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length, final double p)
         throws MathIllegalArgumentException {
 
@@ -993,7 +993,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * @throws OutOfRangeException if p is out of range
          * @throws NullArgumentException if work array is null
          */
-        protected double evaluate(final double @MinLen(1) [] work, final int @MinLen(1) [] pivotsHeap, final double p,
+        protected double evaluate(final double[] work, final int[] pivotsHeap, final double p,
                                   final KthSelector selector) {
             MathUtils.checkNotNull(work);
             if (p > 100 || p <= 0) {
@@ -1017,7 +1017,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
          * @throws OutOfRangeException if length or p is out of range
          * @throws NullArgumentException if work array is null
          */
-        public double evaluate(final double @MinLen(1) [] work, final double p, final KthSelector selector) {
+        public double evaluate(final double[] work, final double p, final KthSelector selector) {
             return this.evaluate(work, null, p, selector);
         }
 

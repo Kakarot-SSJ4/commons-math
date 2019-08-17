@@ -24,7 +24,7 @@ import org.apache.commons.math4.exception.util.LocalizedFormats;
 import org.apache.commons.math4.util.MathArrays;
 
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -44,7 +44,7 @@ public abstract class AbstractUnivariateStatistic
      * {@inheritDoc}
      */
     @Override
-    public double evaluate(final double @MinLen(1) [] values) throws MathIllegalArgumentException {
+    public double evaluate(final double[] values) throws MathIllegalArgumentException {
         MathArrays.verifyValues(values, 0, 0);
         return evaluate(values, 0, values.length);
     }
@@ -53,7 +53,7 @@ public abstract class AbstractUnivariateStatistic
      * {@inheritDoc}
      */
     @Override
-    public abstract double evaluate(final double @MinLen(1) [] values, final @IndexFor("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public abstract double evaluate(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException;
 
     /**
@@ -100,7 +100,7 @@ public abstract class AbstractUnivariateStatistic
      * are not valid
      * @see #evaluate()
      */
-    public void setData(double[] values, @IndexFor("#1") int begin, @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+    public void setData(double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
             throws MathIllegalArgumentException {
         if (values == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);
