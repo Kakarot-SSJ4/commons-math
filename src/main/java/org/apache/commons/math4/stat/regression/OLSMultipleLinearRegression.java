@@ -25,6 +25,9 @@ import org.apache.commons.math4.linear.RealVector;
 import org.apache.commons.math4.stat.StatUtils;
 import org.apache.commons.math4.stat.descriptive.moment.SecondMoment;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.LessThan;
+
 /**
  * <p>Implements ordinary least squares (OLS) to estimate the parameters of a
  * multiple linear regression model.</p>
@@ -97,7 +100,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * <p>This implementation computes and caches the QR decomposition of the X matrix.</p>
      */
     @Override
-    public void newSampleData(double[] data, int nobs, int nvars) {
+    public void newSampleData(double[] data, @NonNegative @LessThan("#3 + 1") int nobs, @NonNegative int nvars) {
         super.newSampleData(data, nobs, nvars);
         qr = new QRDecomposition(getX(), threshold);
     }
@@ -123,6 +126,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * @throws NullPointerException unless method {@code newSampleData} has been
      * called beforehand.
      */
+    @SuppressWarnings("index:array.access.unsafe.high.range") // #1: By #0.1. augIData has n rows and columns
     public RealMatrix calculateHat() {
         // Create augmented identity matrix
         RealMatrix Q = qr.getQ();
@@ -130,13 +134,13 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
         final int n = Q.getColumnDimension();
         // No try-catch or advertised NotStrictlyPositiveException - NPE above if n < 3
         Array2DRowRealMatrix augI = new Array2DRowRealMatrix(n, n);
-        double[][] augIData = augI.getDataRef();
+        double[][] augIData = augI.getDataRef(); // #0.1
         for (int i = 0; i < n; i++) {
             for (int j =0; j < n; j++) {
                 if (i == j && i < p) {
-                    augIData[i][j] = 1d;
+                    augIData[i][j] = 1d; // #1
                 } else {
-                    augIData[i][j] = 0d;
+                    augIData[i][j] = 0d; // #1
                 }
             }
         }
