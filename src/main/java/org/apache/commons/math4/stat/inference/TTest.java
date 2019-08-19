@@ -30,6 +30,8 @@ import org.apache.commons.math4.stat.StatUtils;
 import org.apache.commons.math4.stat.descriptive.StatisticalSummary;
 import org.apache.commons.math4.util.FastMath;
 
+import org.checkerframework.checker.index.qual.SameLen;
+
 /**
  * An implementation for Student's t-tests.
  * <p>
@@ -77,7 +79,7 @@ public class TTest {
      * @throws DimensionMismatchException if the length of the arrays is not equal
      * @throws NumberIsTooSmallException if the length of the arrays is &lt; 2
      */
-    public double pairedT(final double[] sample1, final double[] sample2)
+    public double pairedT(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2)
         throws NullArgumentException, NoDataException,
         DimensionMismatchException, NumberIsTooSmallException {
 
@@ -126,7 +128,7 @@ public class TTest {
      * @throws NumberIsTooSmallException if the length of the arrays is &lt; 2
      * @throws MaxCountExceededException if an error occurs computing the p-value
      */
-    public double pairedTTest(final double[] sample1, final double[] sample2)
+    public double pairedTTest(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2)
         throws NullArgumentException, NoDataException, DimensionMismatchException,
         NumberIsTooSmallException, MaxCountExceededException {
 
@@ -173,7 +175,7 @@ public class TTest {
      * @throws OutOfRangeException if <code>alpha</code> is not in the range (0, 0.5]
      * @throws MaxCountExceededException if an error occurs computing the p-value
      */
-    public boolean pairedTTest(final double[] sample1, final double[] sample2,
+    public boolean pairedTTest(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2,
                                final double alpha)
         throws NullArgumentException, NoDataException, DimensionMismatchException,
         NumberIsTooSmallException, OutOfRangeException, MaxCountExceededException {

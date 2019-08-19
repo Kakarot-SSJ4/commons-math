@@ -184,7 +184,7 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
      *
      */
      @Override
-     public double evaluate(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
+     public double evaluate(final double[] values, final @IndexOrHigh("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
          throws MathIllegalArgumentException {
          double m = (new Mean()).evaluate(values, start, length);
          return evaluate(values, m, varianceDirection, biasCorrected, 0, values.length);

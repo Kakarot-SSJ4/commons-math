@@ -27,6 +27,7 @@ import org.apache.commons.math4.stat.descriptive.moment.SecondMoment;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * <p>Implements ordinary least squares (OLS) to estimate the parameters of a
@@ -89,7 +90,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * @throws MathIllegalArgumentException if the x and y array data are not
      *             compatible for the regression
      */
-    public void newSampleData(double[] y, double[][] x) throws MathIllegalArgumentException {
+    public void newSampleData(double[] y, double @MinLen(1) [][] x) throws MathIllegalArgumentException {
         validateSampleData(x, y);
         newYSampleData(y);
         newXSampleData(x);
@@ -240,7 +241,7 @@ public class OLSMultipleLinearRegression extends AbstractMultipleLinearRegressio
      * once it is successfully loaded.</p>
      */
     @Override
-    protected void newXSampleData(double[][] x) {
+    protected void newXSampleData(double @MinLen(1) [][] x) {
         super.newXSampleData(x);
         qr = new QRDecomposition(getX(), threshold);
     }

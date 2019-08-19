@@ -26,6 +26,9 @@ import org.apache.commons.math4.linear.RealMatrix;
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.Pair;
 
+import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * Implementation of Kendall's Tau-b rank correlation.
  * <p>
@@ -117,12 +120,13 @@ public class KendallsCorrelation {
      * @param matrix matrix with columns representing variables to correlate
      * @return correlation matrix
      */
+    @SuppressWarnings({"value:argument.type.incompatible", "samelen:argument.type.incompatible"}) // #1: For #1 to be executed nVars > 0, hence @MinLen(1)
     public RealMatrix computeCorrelationMatrix(final RealMatrix matrix) {
         int nVars = matrix.getColumnDimension();
         RealMatrix outMatrix = new BlockRealMatrix(nVars, nVars);
         for (int i = 0; i < nVars; i++) {
             for (int j = 0; j < i; j++) {
-                double corr = correlation(matrix.getColumn(i), matrix.getColumn(j));
+                double corr = correlation(matrix.getColumn(i), matrix.getColumn(j)); // #1
                 outMatrix.setEntry(i, j, corr);
                 outMatrix.setEntry(j, i, corr);
             }
@@ -151,7 +155,12 @@ public class KendallsCorrelation {
      * @return Returns Kendall's Tau rank correlation coefficient for the two arrays
      * @throws DimensionMismatchException if the arrays lengths do not match
      */
-    public double correlation(final double[] xArray, final double[] yArray)
+    @SuppressWarnings({"lowerbound:array.access.unsafe.low", "index:array.access.unsafe.high.range", "index:array.access.unsafe.high"}) /*
+    #1: i < iEnd < n and j < jEnd < n, hence i and j are @IndexFor(pairs)
+    #2: copyLocation = offset < n, hence copyLocation is @IndexFor("pairDestination")
+    #3: i < n is checked as the loop condition
+    */
+    public double correlation(final double @SameLen("#2") @MinLen(1) [] xArray, final double @SameLen("#1") @MinLen(1) [] yArray)
             throws DimensionMismatchException {
 
         if (xArray.length != yArray.length) {
@@ -216,20 +225,20 @@ public class KendallsCorrelation {
                 while (i < iEnd || j < jEnd) {
                     if (i < iEnd) {
                         if (j < jEnd) {
-                            if (pairs[i].getSecond().compareTo(pairs[j].getSecond()) <= 0) {
-                                pairsDestination[copyLocation] = pairs[i];
+                            if (pairs[i].getSecond().compareTo(pairs[j].getSecond()) <= 0) { // #1
+                                pairsDestination[copyLocation] = pairs[i]; // #1, #2
                                 i++;
                             } else {
-                                pairsDestination[copyLocation] = pairs[j];
+                                pairsDestination[copyLocation] = pairs[j]; // #1, #2
                                 j++;
                                 swaps += iEnd - i;
                             }
                         } else {
-                            pairsDestination[copyLocation] = pairs[i];
+                            pairsDestination[copyLocation] = pairs[i]; // #1, #2
                             i++;
                         }
                     } else {
-                        pairsDestination[copyLocation] = pairs[j];
+                        pairsDestination[copyLocation] = pairs[j]; // #1, #2
                         j++;
                     }
                     copyLocation++;
@@ -244,7 +253,7 @@ public class KendallsCorrelation {
         long consecutiveYTies = 1;
         prev = pairs[0];
         for (int i = 1; i < n; i++) {
-            final Pair<Double, Double> curr = pairs[i];
+            final Pair<Double, Double> curr = pairs[i]; // #3
             if (curr.getSecond().equals(prev.getSecond())) {
                 consecutiveYTies++;
             } else {

@@ -159,13 +159,17 @@ public class PearsonsCorrelation {
      * @return matrix of correlation standard errors
      * @throws NullPointerException if this instance was created with no data
      */
+    @SuppressWarnings({"index:array.length.negative", "index:array.access.unsafe.high"}) /*
+    #1: nVars is @NonNegative as defined in #0.1
+    #2: i and j < nVars as checked by the loop conditions
+    */
     public RealMatrix getCorrelationStandardErrors() {
-        int nVars = correlationMatrix.getColumnDimension();
-        double[][] out = new double[nVars][nVars];
+        int nVars = correlationMatrix.getColumnDimension(); // #0.1
+        double[][] out = new double[nVars][nVars]; // #1
         for (int i = 0; i < nVars; i++) {
             for (int j = 0; j < nVars; j++) {
                 double r = correlationMatrix.getEntry(i, j);
-                out[i][j] = FastMath.sqrt((1 - r * r) /(nObs - 2));
+                out[i][j] = FastMath.sqrt((1 - r * r) /(nObs - 2)); //#2
             }
         }
         return new BlockRealMatrix(out);
@@ -191,18 +195,22 @@ public class PearsonsCorrelation {
      * if an error occurs estimating probabilities
      * @throws NullPointerException if this instance was created with no data
      */
+    @SuppressWarnings({"index:array.length.negative", "index:array.access.unsafe.high"}) /*
+    #1: nVars is @NonNegative as defined in #0.1
+    #2: i and j < nVars as checked by the loop conditions
+    */
     public RealMatrix getCorrelationPValues() {
         TDistribution tDistribution = new TDistribution(nObs - 2);
-        int nVars = correlationMatrix.getColumnDimension();
-        double[][] out = new double[nVars][nVars];
+        int nVars = correlationMatrix.getColumnDimension(); // #0.1
+        double[][] out = new double[nVars][nVars]; // #1
         for (int i = 0; i < nVars; i++) {
             for (int j = 0; j < nVars; j++) {
                 if (i == j) {
-                    out[i][j] = 0d;
+                    out[i][j] = 0d; // #2
                 } else {
                     double r = correlationMatrix.getEntry(i, j);
                     double t = FastMath.abs(r * FastMath.sqrt((nObs - 2)/(1 - r * r)));
-                    out[i][j] = 2 * tDistribution.cumulativeProbability(-t);
+                    out[i][j] = 2 * tDistribution.cumulativeProbability(-t); // #2
                 }
             }
         }

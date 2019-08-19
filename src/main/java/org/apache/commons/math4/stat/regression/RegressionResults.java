@@ -23,6 +23,8 @@ import org.apache.commons.math4.exception.OutOfRangeException;
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathArrays;
 
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * Results of a Multiple Linear Regression model fit.
  *
@@ -56,7 +58,7 @@ public class RegressionResults implements Serializable {
     /** boolean flag indicator of whether a constant was included*/
     private final boolean containsConstant;
     /** array storing global results, SSE, MSE, RSQ, adjRSQ */
-    private final double[] globalFitInfo;
+    private final double @MinLen(5) [] globalFitInfo;
 
     /**
      *  Set the default constructor to private access
