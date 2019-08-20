@@ -133,7 +133,7 @@ public abstract class AbstractStorelessUnivariateStatistic
      * @see StorelessUnivariateStatistic#incrementAll(double[])
      */
     @Override
-    public void incrementAll(double @MinLen(1) [] values) throws MathIllegalArgumentException {
+    public void incrementAll(double[] values) throws MathIllegalArgumentException {
         if (values == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);
         }
