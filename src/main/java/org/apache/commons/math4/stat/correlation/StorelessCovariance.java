@@ -22,6 +22,10 @@ import org.apache.commons.math4.exception.NumberIsTooSmallException;
 import org.apache.commons.math4.linear.MatrixUtils;
 import org.apache.commons.math4.linear.RealMatrix;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.LengthOf;
+
 /**
  * Covariance implementation that does not require input data to be
  * stored in memory. The size of the covariance matrix is specified in the
@@ -45,14 +49,14 @@ public class StorelessCovariance extends Covariance {
     private StorelessBivariateCovariance[] covMatrix;
 
     /** dimension of the square covariance matrix */
-    private int dimension;
+    private @NonNegative @LengthOf("this.covMatrix") int dimension;
 
     /**
      * Create a bias corrected covariance matrix with a given dimension.
      *
      * @param dim the dimension of the square covariance matrix
      */
-    public StorelessCovariance(final int dim) {
+    public StorelessCovariance(final @NonNegative @LengthOf("this.covMatrix") int dim) {
         this(dim, true);
     }
 
@@ -65,7 +69,7 @@ public class StorelessCovariance extends Covariance {
      * for bias, i.e. n-1 in the denominator, otherwise there is no bias correction,
      * i.e. n in the denominator.
      */
-    public StorelessCovariance(final int dim, final boolean biasCorrected) {
+    public StorelessCovariance(final @NonNegative @LengthOf("this.covMatrix") int dim, final boolean biasCorrected) {
         dimension = dim;
         covMatrix = new StorelessBivariateCovariance[dimension * (dimension + 1) / 2];
         initializeMatrix(biasCorrected);
@@ -94,7 +98,7 @@ public class StorelessCovariance extends Covariance {
      * @param j the column index
      * @return the corresponding index in the matrix array
      */
-    private int indexOf(final int i, final int j) {
+    private @NonNegative @LessThan("this.dimension") int indexOf(final @NonNegative @LessThan("this.dimension") int i, final @NonNegative @LessThan("this.dimension") int j) {
         return j < i ? i * (i + 1) / 2 + j : j * (j + 1) / 2 + i;
     }
 
@@ -104,7 +108,7 @@ public class StorelessCovariance extends Covariance {
      * @param j the column index
      * @return the {@link StorelessBivariateCovariance} element at the given index
      */
-    private StorelessBivariateCovariance getElement(final int i, final int j) {
+    private StorelessBivariateCovariance getElement(final @NonNegative @LessThan("this.dimension") int i, final @NonNegative @LessThan("this.dimension") int j) {
         return covMatrix[indexOf(i, j)];
     }
 
@@ -114,7 +118,7 @@ public class StorelessCovariance extends Covariance {
      * @param j the column index
      * @param cov the {@link StorelessBivariateCovariance} element to be set
      */
-    private void setElement(final int i, final int j,
+    private void setElement(final @NonNegative @LessThan("this.dimension") int i, final @NonNegative @LessThan("this.dimension") int j,
                             final StorelessBivariateCovariance cov) {
         covMatrix[indexOf(i, j)] = cov;
     }
@@ -128,8 +132,8 @@ public class StorelessCovariance extends Covariance {
      * @throws NumberIsTooSmallException if the number of observations
      * in the cell is &lt; 2
      */
-    public double getCovariance(final int xIndex,
-                                final int yIndex)
+    public double getCovariance(final @NonNegative @LessThan("this.dimension") int xIndex,
+                                final @NonNegative @LessThan("this.dimension") int yIndex)
         throws NumberIsTooSmallException {
 
         return getElement(xIndex, yIndex).getResult();
@@ -143,11 +147,12 @@ public class StorelessCovariance extends Covariance {
      * @throws DimensionMismatchException if the length of <code>rowData</code>
      * does not match with the covariance matrix
      */
+    @SuppressWarnings("index:argument.type.incompatible") // #1: length = dimension as checked by #0.1, hence i and j < dimension
     public void increment(final double[] data)
         throws DimensionMismatchException {
 
         int length = data.length;
-        if (length != dimension) {
+        if (length != dimension) { // #0.1
             throw new DimensionMismatchException(length, dimension);
         }
 
@@ -155,7 +160,7 @@ public class StorelessCovariance extends Covariance {
         // as only these parts are actually stored
         for (int i = 0; i < length; i++){
             for (int j = i; j < length; j++){
-                getElement(i, j).increment(data[i], data[j]);
+                getElement(i, j).increment(data[i], data[j]); // #1
             }
         }
 
@@ -171,6 +176,7 @@ public class StorelessCovariance extends Covariance {
      * @throws DimensionMismatchException if the dimension of sc does not match this
      * @since 3.3
      */
+    @SuppressWarnings("index:argument.type.incompatible") // #1: i and j < dimension as is the condition for the loops
     public void append(StorelessCovariance sc) throws DimensionMismatchException {
         if (sc.dimension != dimension) {
             throw new DimensionMismatchException(sc.dimension, dimension);
@@ -180,7 +186,7 @@ public class StorelessCovariance extends Covariance {
         // as only these parts are actually stored
         for (int i = 0; i < dimension; i++) {
             for (int j = i; j < dimension; j++) {
-                getElement(i, j).append(sc.getElement(i, j));
+                getElement(i, j).append(sc.getElement(i, j)); // #1
             }
         }
     }
@@ -202,6 +208,7 @@ public class StorelessCovariance extends Covariance {
      * @throws NumberIsTooSmallException if the number of observations
      * for a cell is &lt; 2
      */
+    @SuppressWarnings("index:array.access.unsafe.high") // #1: i and j < dimension as is the condition for the loops
     public double[][] getData() throws NumberIsTooSmallException {
         final double[][] data = new double[dimension][dimension];
         for (int i = 0; i < dimension; i++) {

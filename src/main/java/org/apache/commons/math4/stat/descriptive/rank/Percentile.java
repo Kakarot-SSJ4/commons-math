@@ -34,6 +34,11 @@ import org.apache.commons.math4.util.MedianOf3PivotingStrategy;
 import org.apache.commons.math4.util.PivotingStrategyInterface;
 import org.apache.commons.numbers.core.Precision;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * Provides percentile computation.
  * <p>
@@ -295,7 +300,7 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      *
      */
     @Override
-    public double evaluate(final double[] values, final int start, final int length)
+    public double evaluate(final double[] values, final @IndexOrHigh("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return evaluate(values, start, length, quantile);
     }
@@ -329,8 +334,8 @@ public class Percentile extends AbstractUnivariateStatistic implements Serializa
      * @throws MathIllegalArgumentException if the parameters are not valid or the
      * input array is null
      */
-    public double evaluate(final double[] values, final int begin,
-                           final int length, final double p)
+    public double evaluate(final double[] values, final @IndexOrHigh("#1") int begin,
+                           final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length, final double p)
         throws MathIllegalArgumentException {
 
         MathArrays.verifyValues(values, begin, length);

@@ -573,7 +573,7 @@
               <compilerArgs>
                 <!-- location of the annotated JDK, which comes from a Maven dependency -->
                 <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
-                <arg>-AonlyDefs=^org\.apache\.commons\.math4\.util\.</arg>
+                <arg>-AonlyDefs=^org\.apache\.commons\.math4\.util\.|^org\.apache\.commons\.math4\.stat\.</arg>
                 <arg>-ArequirePrefixInWarningSuppressions</arg>
                 <arg>-AwarnUnneededSuppressions</arg>
               </compilerArgs>

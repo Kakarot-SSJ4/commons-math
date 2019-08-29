@@ -28,6 +28,8 @@ import org.apache.commons.math4.stat.ranking.NaturalRanking;
 import org.apache.commons.math4.stat.ranking.TiesStrategy;
 import org.apache.commons.math4.util.FastMath;
 
+import org.checkerframework.checker.index.qual.SameLen;
+
 /**
  * An implementation of the Wilcoxon signed-rank test.
  *
@@ -94,9 +96,9 @@ public class WilcoxonSignedRankTest {
      * @param y second sample
      * @return z = y - x
      */
-    private double[] calculateDifferences(final double[] x, final double[] y) {
+    private double[] calculateDifferences(final double @SameLen("#2") [] x, final double @SameLen("#1") [] y) {
 
-        final double[] z = new double[x.length];
+        final double @SameLen("x") [] z = new double[x.length];
 
         for (int i = 0; i < x.length; ++i) {
             z[i] = y[i] - x[i];
@@ -167,7 +169,7 @@ public class WilcoxonSignedRankTest {
      * @throws DimensionMismatchException if {@code x} and {@code y} do not
      * have the same length.
      */
-    public double wilcoxonSignedRank(final double[] x, final double[] y)
+    public double wilcoxonSignedRank(final double @SameLen("#2") [] x, final double @SameLen("#1") [] y)
         throws NullArgumentException, NoDataException, DimensionMismatchException {
 
         ensureDataConformance(x, y);
@@ -299,7 +301,7 @@ public class WilcoxonSignedRankTest {
      * @throws MaxCountExceededException if the maximum number of iterations
      * is exceeded
      */
-    public double wilcoxonSignedRankTest(final double[] x, final double[] y,
+    public double wilcoxonSignedRankTest(final double @SameLen("#2") [] x, final double @SameLen("#1") [] y,
                                          final boolean exactPValue)
         throws NullArgumentException, NoDataException, DimensionMismatchException,
         NumberIsTooLargeException, ConvergenceException, MaxCountExceededException {

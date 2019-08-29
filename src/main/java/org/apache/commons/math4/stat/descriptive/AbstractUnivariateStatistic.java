@@ -23,6 +23,11 @@ import org.apache.commons.math4.exception.NumberIsTooLargeException;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
 import org.apache.commons.math4.util.MathArrays;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * Abstract base class for implementations of the {@link UnivariateStatistic} interface.
  * <p>
@@ -48,7 +53,7 @@ public abstract class AbstractUnivariateStatistic
      * {@inheritDoc}
      */
     @Override
-    public abstract double evaluate(final double[] values, final int begin, final int length)
+    public abstract double evaluate(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException;
 
     /**
@@ -95,7 +100,7 @@ public abstract class AbstractUnivariateStatistic
      * are not valid
      * @see #evaluate()
      */
-    public void setData(final double[] values, final int begin, final int length)
+    public void setData(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
             throws MathIllegalArgumentException {
         if (values == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);

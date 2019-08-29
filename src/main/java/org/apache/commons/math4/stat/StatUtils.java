@@ -38,6 +38,12 @@ import org.apache.commons.math4.stat.descriptive.summary.Sum;
 import org.apache.commons.math4.stat.descriptive.summary.SumOfLogs;
 import org.apache.commons.math4.stat.descriptive.summary.SumOfSquares;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * StatUtils provides static methods for computing statistics based on data
  * stored in double[] arrays.
@@ -107,7 +113,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double sum(final double[] values, final int begin, final int length)
+    public static double sum(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return SUM.evaluate(values, begin, length);
     }
@@ -140,7 +146,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double sumSq(final double[] values, final int begin, final int length)
+    public static double sumSq(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return SUM_OF_SQUARES.evaluate(values, begin, length);
     }
@@ -173,7 +179,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double product(final double[] values, final int begin, final int length)
+    public static double product(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return PRODUCT.evaluate(values, begin, length);
     }
@@ -210,7 +216,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      * parameters are not valid
      */
-    public static double sumLog(final double[] values, final int begin, final int length)
+    public static double sumLog(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return SUM_OF_LOGS.evaluate(values, begin, length);
     }
@@ -249,7 +255,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      * parameters are not valid
      */
-    public static double mean(final double[] values, final int begin, final int length)
+    public static double mean(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return MEAN.evaluate(values, begin, length);
     }
@@ -288,7 +294,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double geometricMean(final double[] values, final int begin, final int length)
+    public static double geometricMean(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return GEOMETRIC_MEAN.evaluate(values, begin, length);
     }
@@ -340,7 +346,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double variance(final double[] values, final int begin, final int length)
+    public static double variance(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return VARIANCE.evaluate(values, begin, length);
     }
@@ -375,7 +381,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double variance(final double[] values, final double mean, final int begin, final int length)
+    public static double variance(final double[] values, final double mean, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#3 - 1"}) int length)
         throws MathIllegalArgumentException {
         return VARIANCE.evaluate(values, mean, begin, length);
     }
@@ -451,7 +457,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double populationVariance(final double[] values, final int begin, final int length)
+    public static double populationVariance(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return new Variance(false).evaluate(values, begin, length);
     }
@@ -484,7 +490,7 @@ public final class StatUtils {
      *  parameters are not valid
      */
     public static double populationVariance(final double[] values, final double mean,
-                                            final int begin, final int length)
+                                            final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#3 - 1"}) int length)
         throws MathIllegalArgumentException {
         return new Variance(false).evaluate(values, mean, begin, length);
     }
@@ -555,7 +561,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double max(final double[] values, final int begin, final int length)
+    public static double max(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return MAX.evaluate(values, begin, length);
     }
@@ -600,7 +606,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the array is null or the array index
      *  parameters are not valid
      */
-    public static double min(final double[] values, final int begin, final int length)
+    public static double min(final double[] values, final @IndexOrHigh("#1")  int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
         return MIN.evaluate(values, begin, length);
     }
@@ -655,7 +661,7 @@ public final class StatUtils {
      * @return the percentile value
      * @throws MathIllegalArgumentException if the parameters are not valid or the input array is null
      */
-    public static double percentile(final double[] values, final int begin, final int length, final double p)
+    public static double percentile(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length, final double p)
         throws MathIllegalArgumentException {
         return PERCENTILE.evaluate(values, begin, length, p);
     }
@@ -670,7 +676,7 @@ public final class StatUtils {
      * @throws DimensionMismatchException if the arrays do not have the same (positive) length.
      * @throws NoDataException if the sample arrays are empty.
      */
-    public static double sumDifference(final double[] sample1, final double[] sample2)
+    public static double sumDifference(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2)
         throws DimensionMismatchException, NoDataException {
 
         int n = sample1.length;
@@ -697,7 +703,7 @@ public final class StatUtils {
      * @throws DimensionMismatchException if the arrays do not have the same (positive) length.
      * @throws NoDataException if the sample arrays are empty.
      */
-    public static double meanDifference(final double[] sample1, final double[] sample2)
+    public static double meanDifference(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2)
         throws DimensionMismatchException, NoDataException {
         return sumDifference(sample1, sample2) / sample1.length;
     }
@@ -714,7 +720,7 @@ public final class StatUtils {
      * @throws NumberIsTooSmallException if the arrays length is less than 2.
      * @see #meanDifference(double[],double[])
      */
-    public static double varianceDifference(final double[] sample1, final double[] sample2, double meanDifference)
+    public static double varianceDifference(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2, double meanDifference)
         throws DimensionMismatchException, NumberIsTooSmallException {
 
         double sum1 = 0d;
@@ -815,7 +821,7 @@ public final class StatUtils {
      * @throws MathIllegalArgumentException if the indices are invalid or the array is null
      * @since 3.3
      */
-    public static double[] mode(double[] sample, final int begin, final int length) {
+    public static double[] mode(double[] sample, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) {
         if (sample == null) {
             throw new NullArgumentException(LocalizedFormats.INPUT_ARRAY);
         }
@@ -839,7 +845,8 @@ public final class StatUtils {
      * @param length the number of elements to include
      * @return array of array of the most frequently occurring element(s) sorted in ascending order.
      */
-    private static double[] getMode(double[] values, final int begin, final int length) {
+    @SuppressWarnings("index:array.access.unsafe.high") // #1: modes.length = list.size() => i is @IndexFor("mode") as the iteration occurs till the last element of list
+    private static double[] getMode(double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length) {
         // Add the values to the frequency table
         Frequency<Double> freq = new Frequency<>();
         for (int i = begin; i < begin + length; i++) {
@@ -853,7 +860,7 @@ public final class StatUtils {
         double[] modes = new double[list.size()];
         int i = 0;
         for(Double c : list) {
-            modes[i++] = c.doubleValue();
+            modes[i++] = c.doubleValue(); // #1
         }
         return modes;
     }

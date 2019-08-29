@@ -25,6 +25,11 @@ import org.apache.commons.math4.stat.descriptive.AbstractUnivariateStatistic;
 import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * <p>Computes the semivariance of a set of values with respect to a given cutoff value.
  * We define the <i>downside semivariance</i> of a set of values <code>x</code>
@@ -179,7 +184,7 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
      *
      */
      @Override
-     public double evaluate(final double[] values, final int start, final int length)
+     public double evaluate(final double[] values, final @IndexOrHigh("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
          throws MathIllegalArgumentException {
          double m = (new Mean()).evaluate(values, start, length);
          return evaluate(values, m, varianceDirection, biasCorrected, 0, values.length);
@@ -254,7 +259,7 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
       *
       */
      public double evaluate (final double[] values, final double cutoff, final Direction direction,
-                             final boolean corrected, final int start, final int length)
+                             final boolean corrected, final @IndexOrHigh("#1") int start, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#4 - 1"}) int length)
          throws MathIllegalArgumentException {
 
          MathArrays.verifyValues(values, start, length);

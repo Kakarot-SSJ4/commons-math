@@ -26,6 +26,12 @@ import org.apache.commons.math4.stat.descriptive.summary.Sum;
 import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * Computes the arithmetic mean of a set of values. Uses the definitional
  * formula:
@@ -160,7 +166,7 @@ public class Mean extends AbstractStorelessUnivariateStatistic
      *  parameters are not valid
      */
     @Override
-    public double evaluate(final double[] values, final int begin, final int length)
+    public double evaluate(final double[] values, final @IndexOrHigh("#1") int begin, final @NonNegative @LTLengthOf(value = {"#1"}, offset = {"#2 - 1"}) int length)
         throws MathIllegalArgumentException {
 
         if (MathArrays.verifyValues(values, begin, length)) {
@@ -210,8 +216,8 @@ public class Mean extends AbstractStorelessUnivariateStatistic
      * @since 2.1
      */
     @Override
-    public double evaluate(final double[] values, final double[] weights,
-                           final int begin, final int length) throws MathIllegalArgumentException {
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights,
+                           final @IndexOrHigh({"#1", "#2"}) int begin, final @NonNegative @LTLengthOf(value = {"#1", "#2"}, offset = {"#3 - 1", "#3 - 1"}) int length) throws MathIllegalArgumentException {
         if (MathArrays.verifyValues(values, weights, begin, length)) {
             Sum sum = new Sum();
 
@@ -254,7 +260,7 @@ public class Mean extends AbstractStorelessUnivariateStatistic
      * @since 2.1
      */
     @Override
-    public double evaluate(final double[] values, final double[] weights)
+    public double evaluate(final double @SameLen("#2") [] values, final double @SameLen("#1") [] weights)
         throws MathIllegalArgumentException {
         return evaluate(values, weights, 0, values.length);
     }
