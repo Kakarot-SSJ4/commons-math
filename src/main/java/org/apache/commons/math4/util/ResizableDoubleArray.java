@@ -275,7 +275,7 @@ public class ResizableDoubleArray implements DoubleArray, Serializable {
      * @throws MathIllegalArgumentException if the parameters are not valid.
      * @throws NullArgumentException if expansionMode is null
      */
-    @SuppressWarnings("index:assignment.type.incompatible") // internalArray is @MinLen(1) and startIndex is @IndexFor("internalArray"), hence 0 < 1 - 0 + 1
+    @SuppressWarnings("index:assignment.type.incompatible") // #1: internalArray is @MinLen(1) and startIndex is @IndexFor("internalArray"), hence 0 < 1 - 0 + 1
     public ResizableDoubleArray(int initialCapacity,
                                 double expansionFactor,
                                 double contractionCriterion,
@@ -331,7 +331,7 @@ public class ResizableDoubleArray implements DoubleArray, Serializable {
      *
      * @param value Value to be added to end of array.
      */
-    @SuppressWarnings({"index:array.access.unsafe.high","compound.assignment.type.incompatible"}) /* #1: expand() increases the length by at least 1,
+    @SuppressWarnings({"index:array.access.unsafe.high","index:unary.increment.type.incompatible"}) /* #1: expand() increases the length by at least 1,
     since this function adds elements one by one, startIndex + numElements in #1 will always be @IndexFor("internalArray")
     */
     @Override
@@ -349,7 +349,7 @@ public class ResizableDoubleArray implements DoubleArray, Serializable {
      * @since 2.2
      */
     @Override
-    @SuppressWarnings({"index:argument.type.incompatible","compound.assignment.type.incompatible"}) /*
+    @SuppressWarnings({"index:argument.type.incompatible", "index:compound.assignment.type.incompatible"}) /*
     #1: numElements <= tempArray.length as tempArray.length = numElements + values.length + 1
     #2: values.length <= tempArray.length - numElements = numElements + values.length + 1 - values.length = values.length + 1
     #3: internalArray's new length = numElements + values.length + 1 nad startIndex = 0, hence numElements + values.length < internalArray.length - startIndex + 1
@@ -766,7 +766,7 @@ public class ResizableDoubleArray implements DoubleArray, Serializable {
      * @throws ArrayIndexOutOfBoundsException if {@code index < 0}.
      */
     @Override
-    @SuppressWarnings({"index:assignment.type.incompatible", "array.access.unsafe.high", "value:argument.type.incompatible"}) /*
+    @SuppressWarnings({"index:assignment.type.incompatible", "index:array.access.unsafe.high", "value:argument.type.incompatible"}) /*
     #1: if numElements > internalArray.length - startIndex, internalArray is expanded by #0.1
     #2: Id startIndex + index >= internalArray.length, internalArray is expanded by #0.1
     #3: startIndex and index both are @NonNegative, hence startIndex + index + 1 is minimum 1
