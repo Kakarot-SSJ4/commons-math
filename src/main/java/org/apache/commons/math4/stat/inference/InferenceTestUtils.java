@@ -33,6 +33,9 @@ import org.apache.commons.math4.exception.OutOfRangeException;
 import org.apache.commons.math4.exception.ZeroException;
 import org.apache.commons.math4.stat.descriptive.StatisticalSummary;
 
+import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * A collection of static methods to create inference test instances or to
  * perform inference tests.
@@ -132,7 +135,7 @@ public class InferenceTestUtils {
      * @return t statistic
      * @see org.apache.commons.math4.stat.inference.TTest#pairedT(double[], double[])
      */
-    public static double pairedT(final double[] sample1, final double[] sample2)
+    public static double pairedT(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2)
         throws NullArgumentException, NoDataException,
         DimensionMismatchException, NumberIsTooSmallException {
         return T_TEST.pairedT(sample1, sample2);
@@ -146,7 +149,7 @@ public class InferenceTestUtils {
      * confidence 1 - alpha
      * @see org.apache.commons.math4.stat.inference.TTest#pairedTTest(double[], double[], double)
      */
-    public static boolean pairedTTest(final double[] sample1, final double[] sample2,
+    public static boolean pairedTTest(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2,
                                       final double alpha)
         throws NullArgumentException, NoDataException, DimensionMismatchException,
         NumberIsTooSmallException, OutOfRangeException, MaxCountExceededException {
@@ -159,7 +162,7 @@ public class InferenceTestUtils {
      * @return p-value for t-test
      * @see org.apache.commons.math4.stat.inference.TTest#pairedTTest(double[], double[])
      */
-    public static double pairedTTest(final double[] sample1, final double[] sample2)
+    public static double pairedTTest(final double @SameLen("#2") [] sample1, final double @SameLen("#1") [] sample2)
         throws NullArgumentException, NoDataException, DimensionMismatchException,
         NumberIsTooSmallException, MaxCountExceededException {
         return T_TEST.pairedTTest(sample1, sample2);
@@ -334,7 +337,7 @@ public class InferenceTestUtils {
      * @return chiSquare test statistic
      * @see org.apache.commons.math4.stat.inference.ChiSquareTest#chiSquare(long[][])
      */
-    public static double chiSquare(final long[][] counts)
+    public static double chiSquare(final long @MinLen(2) [] @MinLen(2) [] counts)
         throws NullArgumentException, NotPositiveException,
         DimensionMismatchException {
         return CHI_SQUARE_TEST.chiSquare(counts);
@@ -348,7 +351,7 @@ public class InferenceTestUtils {
      * 1 - alpha
      * @see org.apache.commons.math4.stat.inference.ChiSquareTest#chiSquareTest(double[], long[], double)
      */
-    public static boolean chiSquareTest(final double[] expected, final long[] observed,
+    public static boolean chiSquareTest(final double @MinLen(2) [] expected, final long @MinLen(2) [] observed,
                                         final double alpha)
         throws NotPositiveException, NotStrictlyPositiveException,
         DimensionMismatchException, OutOfRangeException, MaxCountExceededException {
@@ -374,7 +377,7 @@ public class InferenceTestUtils {
      * 1 - alpha
      * @see org.apache.commons.math4.stat.inference.ChiSquareTest#chiSquareTest(long[][], double)
      */
-    public static boolean chiSquareTest(final long[][] counts, final double alpha)
+    public static boolean chiSquareTest(final long @MinLen(2) [] @MinLen(2) [] counts, final double alpha)
         throws NullArgumentException, DimensionMismatchException,
         NotPositiveException, OutOfRangeException, MaxCountExceededException {
         return CHI_SQUARE_TEST.chiSquareTest(counts, alpha);
@@ -385,7 +388,7 @@ public class InferenceTestUtils {
      * @return p-value
      * @see org.apache.commons.math4.stat.inference.ChiSquareTest#chiSquareTest(long[][])
      */
-    public static double chiSquareTest(final long[][] counts)
+    public static double chiSquareTest(final long @MinLen(2) [] @MinLen(2) [] counts)
         throws NullArgumentException, DimensionMismatchException,
         NotPositiveException, MaxCountExceededException {
         return CHI_SQUARE_TEST.chiSquareTest(counts);
@@ -430,8 +433,8 @@ public class InferenceTestUtils {
      *
      * @since 1.2
      */
-    public static boolean chiSquareTestDataSetsComparison(final long[] observed1,
-                                                          final long[] observed2,
+    public static boolean chiSquareTestDataSetsComparison(final long @MinLen(2) @SameLen("#2") [] observed1,
+                                                          final long @MinLen(2) @SameLen("#1") [] observed2,
                                                           final double alpha)
         throws DimensionMismatchException, NotPositiveException,
         ZeroException, OutOfRangeException, MaxCountExceededException {
@@ -545,8 +548,8 @@ public class InferenceTestUtils {
      * @see org.apache.commons.math4.stat.inference.GTest#gDataSetsComparison(long[], long[])
      * @since 3.1
      */
-    public static double gDataSetsComparison(final long[] observed1,
-                                                  final long[] observed2)
+    public static double gDataSetsComparison(final long @MinLen(2) @SameLen("#2") [] observed1,
+                                                  final long @MinLen(2) @SameLen("#1") [] observed2)
         throws DimensionMismatchException, NotPositiveException, ZeroException {
         return G_TEST.gDataSetsComparison(observed1, observed2);
     }
@@ -577,8 +580,8 @@ public class InferenceTestUtils {
      * @see org.apache.commons.math4.stat.inference.GTest#gTestDataSetsComparison(long[], long[])
      * @since 3.1
      */
-    public static double gTestDataSetsComparison(final long[] observed1,
-                                                        final long[] observed2)
+    public static double gTestDataSetsComparison(final long @MinLen(2) @SameLen("#2") [] observed1,
+                                                        final long @MinLen(2) @SameLen("#1") [] observed2)
         throws DimensionMismatchException, NotPositiveException, ZeroException,
         MaxCountExceededException {
         return G_TEST.gTestDataSetsComparison(observed1, observed2);
@@ -594,8 +597,8 @@ public class InferenceTestUtils {
      * @see org.apache.commons.math4.stat.inference.GTest#gTestDataSetsComparison(long[],long[],double)
      * @since 3.1
      */
-    public static boolean gTestDataSetsComparison(final long[] observed1,
-                                                  final long[] observed2,
+    public static boolean gTestDataSetsComparison(final long @MinLen(2) @SameLen("#2") [] observed1,
+                                                  final long @MinLen(2) @SameLen("#1") [] observed2,
                                                   final double alpha)
         throws DimensionMismatchException, NotPositiveException,
         ZeroException, OutOfRangeException, MaxCountExceededException {

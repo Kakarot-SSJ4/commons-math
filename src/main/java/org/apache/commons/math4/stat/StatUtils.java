@@ -42,7 +42,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.SameLen;
-import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * StatUtils provides static methods for computing statistics based on data

@@ -274,8 +274,8 @@ public class SemiVariance extends AbstractUnivariateStatistic implements Seriali
                  double dev = 0.0;
                  double sumsq = 0.0;
                  for (int i = start; i < length; i++) {
-                     if ((values[i] > cutoff) == booleanDirection) {
-                         dev = values[i] - cutoff;
+                     if ((values[i] > cutoff) == booleanDirection) { // #1
+                         dev = values[i] - cutoff; // #1
                          sumsq += dev * dev;
                      }
                  }

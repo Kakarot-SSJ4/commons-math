@@ -23,6 +23,8 @@ import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.numbers.core.Precision;
 
+import org.checkerframework.common.value.qual.MinLen;
+
 /**
  * This class is a concrete implementation of the {@link UpdatingMultipleLinearRegression} interface.
  *
@@ -195,7 +197,7 @@ public class MillerUpdatingRegression implements UpdatingMultipleLinearRegressio
      * the length of {@code y} or does not contain sufficient data to estimate the model
      */
     @Override
-    public void addObservations(double[][] x, double[] y) throws ModelSpecificationException {
+    public void addObservations(double[] @MinLen(1) [] x, double[] y) throws ModelSpecificationException {
         if ((x == null) || (y == null) || (x.length != y.length)) {
             throw new ModelSpecificationException(
                   LocalizedFormats.DIMENSIONS_MISMATCH_SIMPLE,

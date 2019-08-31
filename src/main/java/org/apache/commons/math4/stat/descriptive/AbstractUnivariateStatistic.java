@@ -38,7 +38,7 @@ public abstract class AbstractUnivariateStatistic
     implements UnivariateStatistic {
 
     /** Stored data. */
-    private double[] storedData;
+    private double @MinLen(1) [] storedData;
 
     /**
      * {@inheritDoc}
